@@ -1,0 +1,13 @@
+# Changes here will be overwritten by Copier
+# DO NOT MANUALLY MODIFY THIS FILE
+_commit: latest
+_src_path: https://github.com/calliope-project/data-module-template.git
+author_email: j.a.c.launer@tudelft.nl
+author_family_name: Launer
+author_given_name: Jann
+github_org: calliope-project
+license: MIT
+module_description: This module prepares electricity demand timeseries for Europe
+    at arbitrary resolution
+module_long_name: Data module for electricity demand in Europe
+module_short_name: module_demand_electricity
