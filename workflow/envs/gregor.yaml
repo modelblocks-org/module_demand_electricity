@@ -1,0 +1,11 @@
+name: gregor_env
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - curl=8.9.1
+  - pycountry
+  - pyarrow
+  - fastparquet
+  - pip:
+    - git+https://github.com/jnnr/gregor.git@4ef5b2e

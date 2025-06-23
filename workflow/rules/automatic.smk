@@ -1,16 +1,36 @@
 """Rules to used to download automatic resource files."""
 
 
-rule dummy_download:
+rule download_resources:
     message:
-        "Download the clio README file."
+        "Download resources."
     params:
-        url=internal["resources"]["automatic"]["dummy_readme"],
+        url_load=internal["resources"]["automatic"]["load"],
+        url_population=internal["resources"]["automatic"]["population"],
     output:
-        readme="resources/automatic/dummy_readme.md",
+        load="resources/automatic/load.csv",
+        population="resources/automatic/population.zip",
     log:
-        "logs/dummy_download.log",
+        "logs/download_resources.log",
     conda:
         "../envs/shell.yaml"
     shell:
-        'curl -sSLo {output.readme} "{params.url}"'
+        """
+        curl -sSLo {output.load} '{params.url_load}'
+        curl -sSLo {output.population} '{params.url_population}'
+        """
+
+
+rule unzip:
+    message:
+        "Unzip population data."
+    input:
+        "resources/automatic/population.zip",
+    output:
+        directory("resources/automatic/population"),
+    log:
+        "logs/unzip.log",
+    conda:
+        "../envs/shell.yaml"
+    shell:
+        "unzip -o {input} -d {output}"

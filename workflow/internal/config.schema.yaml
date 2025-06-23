@@ -3,6 +3,39 @@ description: "Schema for user-provided configuration files."
 type: object
 additionalProperties: false
 properties:
-  dummy_text:
-    description: A template example. Should be deleted in real applications.
-    type: string
+  temporal_scope:
+    type: object
+    description: "The temporal scope of the simulation."
+    properties:
+      start:
+        type: string
+        format: date-time
+        description: "Start date and time of the simulation in ISO 8601 format."
+      end:
+        type: string
+        format: date-time
+        description: "End date and time of the simulation in ISO 8601 format."
+    required:
+      - start
+      - end
+  spatial_scope:
+    type: object
+    description: "The spatial scope of the simulation."
+    properties:
+      minx:
+        type: number
+        description: "Minimum longitude of the spatial scope."
+      maxx:
+        type: number
+        description: "Maximum longitude of the spatial scope."
+      miny:
+        type: number
+        description: "Minimum latitude of the spatial scope."
+      maxy:
+        type: number
+        description: "Maximum latitude of the spatial scope."
+    required:
+      - minx
+      - maxx
+      - miny
+      - maxy

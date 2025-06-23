@@ -1,2 +1,9 @@
 # A minimal example of how to configure this module
-dummy_text: This is a user input.
+temporal_scope:
+  start: 2017-01-01T00:00:00Z
+  end: 2017-01-03T23:59:59Z
+spatial_scope:
+  minx: -15.8
+  maxx: 37.
+  miny: 30.
+  maxy: 75.
