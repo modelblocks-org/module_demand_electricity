@@ -42,7 +42,7 @@ def main(path_raw_load, path_output_load):
     load_pivot = pd.pivot(
         load_alpha3, index=["utc_timestamp"], columns=["region"], values="data"
     )
-    load_pivot.index = pd.to_datetime(load_pivot.index)
+    load_pivot.index = pd.to_datetime(load_pivot.index).tz_localize(None)
 
     load_pivot = load_pivot.to_parquet(path_output_load)
 

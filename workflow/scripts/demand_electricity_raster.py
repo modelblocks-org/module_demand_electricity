@@ -7,13 +7,7 @@ import gregor
 import matplotlib.pyplot as plt
 import pandas as pd
 import rioxarray as rxr
-
-
-def plot_profiles(profiles):
-    """Plot electricity demand profiles."""
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-    return fig
+import xarray as xr
 
 
 def plot_map(shapes, demand):
@@ -28,7 +22,7 @@ def main(
     path_population,
     path_countries,
     path_output_data,
-    path_output_plot,
+    path_output_profiles,
     path_output_map,
 ):
     """Main function."""
@@ -43,23 +37,29 @@ def main(
     missing_countries = set(regions).difference(countries["id"].unique())
     logger.info("Drop timeseries for missing countries", missing_countries)
     demand_filtered = demand.loc[:, demand.columns.isin(countries["id"].unique())]
-    demand_filtered = demand.loc[:, demand.columns == "ALB"]
 
     # filter demand
     start = snakemake.config["temporal_scope"]["start"]
     end = snakemake.config["temporal_scope"]["end"]
     demand_filtered = demand_filtered.loc[start:end]
 
-    demand_raster = gregor.timeseries.disaggregate_timeseries_polygon_to_raster(
-        demand_filtered, countries, column="demand", proxy=population
-    )
+    # aggregate demand over time
+    demand_sum = demand_filtered.sum(axis=0).to_frame(name="demand")
 
+    # join with countries' geometry
+    demand_sum = demand_sum.join(countries["geometry"])
+    demand_sum = gpd.GeoDataFrame(demand_sum, geometry="geometry")
+
+    # disaggregate annual demand to raster resolution
+    demand_raster = gregor.disaggregate.disaggregate_polygon_to_raster(
+        demand_sum, column="demand", proxy=population
+    )
     demand_raster.to_netcdf(path_output_data)
 
-    plot_profiles(demand_raster)
-    plt.savefig(path_output_plot)
+    demand_profiles = xr.DataArray(demand_filtered)
+    demand_profiles.to_netcdf(path_output_profiles)
 
-    plot_map(countries, demand_raster)
+    # plot_map(countries, demand_raster)
     plt.savefig(path_output_map)
 
 
@@ -70,6 +70,6 @@ if __name__ == "__main__":
         snakemake.input.population,
         snakemake.input.countries,
         snakemake.output.output_data,
-        snakemake.output.output_plot,
+        snakemake.output.output_profiles,
         snakemake.output.output_map,
     )

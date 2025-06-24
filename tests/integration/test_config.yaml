@@ -1,7 +1,7 @@
 module_demand_electricity:
   temporal_scope:
     start: "2017-01-01"
-    end: "2017-01-03"
+    end: "2017-12-31"
   spatial_scope:
     minx: -15.8
     maxx: 37.
