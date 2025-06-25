@@ -7,11 +7,11 @@ rule copy_resources:
     message:
         "Example of a rule external to your module."
     input:
-        shapes="../files/units.geojson",
-        countries="../files/national.geojson",
+        shapes="../files/shapes.parquet",
+        countries="../files/shapes_national.parquet",
     output:
-        shapes="results/module_demand_electricity/resources/user/shapes.geojson",
-        countries="results/module_demand_electricity/resources/user/countries.geojson",
+        shapes="results/module_demand_electricity/resources/user/shapes.parquet",
+        countries="results/module_demand_electricity/resources/user/countries.parquet",
     shell:
         """
         cp {input.shapes} {output.shapes}
@@ -38,7 +38,7 @@ use rule * from module_demand_electricity as module_demand_electricity_*
 # Request something from the module
 rule all:
     message:
-        "A generic test case for your module."
+        "A test case."
     default_target: True
     input:
-        "results/module_demand_electricity/results/demand_electricity.nc",
+        "results/module_demand_electricity/results/demand_electricity_polygon_profiles.parquet",

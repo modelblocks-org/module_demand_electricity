@@ -7,7 +7,6 @@ import gregor
 import matplotlib.pyplot as plt
 import pandas as pd
 import rioxarray as rxr
-import xarray as xr
 
 
 def plot_map(shapes, demand):
@@ -27,16 +26,15 @@ def main(
 ):
     """Main function."""
     demand = pd.read_parquet(path_demand)
-    countries = gpd.read_file(path_countries)
-    countries = countries.set_index(countries.columns[0])
+    countries = gpd.read_file(path_countries).set_index("id")
     population = rxr.open_rasterio(path_population)
     population = population.sel(band=1)
 
     # match load data with countries
     regions = demand.columns
-    missing_countries = set(regions).difference(countries["id"].unique())
+    missing_countries = set(regions).difference(countries.index.unique())
     logger.info("Drop timeseries for missing countries", missing_countries)
-    demand_filtered = demand.loc[:, demand.columns.isin(countries["id"].unique())]
+    demand_filtered = demand.loc[:, demand.columns.isin(countries.index.unique())]
 
     # filter demand
     start = snakemake.config["temporal_scope"]["start"]
@@ -54,10 +52,9 @@ def main(
     demand_raster = gregor.disaggregate.disaggregate_polygon_to_raster(
         demand_sum, column="demand", proxy=population
     )
-    demand_raster.to_netcdf(path_output_data)
+    demand_raster.rio.to_raster(path_output_data)
 
-    demand_profiles = xr.DataArray(demand_filtered)
-    demand_profiles.to_netcdf(path_output_profiles)
+    demand_filtered.to_parquet(path_output_profiles)
 
     # plot_map(countries, demand_raster)
     plt.savefig(path_output_map)
