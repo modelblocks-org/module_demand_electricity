@@ -27,10 +27,11 @@ rule unzip:
     input:
         "resources/automatic/population.zip",
     output:
-        directory("resources/automatic/population"),
+        directory=directory("resources/automatic/population"),
+        population_clean="resources/automatic/population/GHS_POP_E2020_GLOBE_R2023A_54009_1000_V1_0.tif",
     log:
         "logs/unzip.log",
     conda:
         "../envs/shell.yaml"
     shell:
-        "unzip -o {input} -d {output}"
+        "unzip -o {input} -d {output.directory}"
