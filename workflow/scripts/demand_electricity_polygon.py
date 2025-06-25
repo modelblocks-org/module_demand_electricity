@@ -94,9 +94,7 @@ def main(
     """Main function."""
     demand_raster = rxr.open_rasterio(path_demand_raster)
     demand_profiles = pd.read_parquet(path_demand_profiles)
-    shapes = gpd.read_parquet(path_shapes).set_index("shape_id")[
-        ["country_id", "geometry"]
-    ]
+    shapes = gpd.read_parquet(path_shapes)[["country_id", "geometry"]]
 
     demand_polygon = gregor.aggregate.aggregate_raster_to_polygon(
         demand_raster.sel(

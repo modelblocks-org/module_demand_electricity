@@ -10,7 +10,7 @@ rule copy_resources:
         shapes="../files/shapes.parquet",
         countries="../files/shapes_national.parquet",
     output:
-        shapes="results/module_demand_electricity/resources/user/shapes.parquet",
+        shapes="results/module_demand_electricity/resources/user/shapes_test.parquet",
         countries="results/module_demand_electricity/resources/user/countries.parquet",
     shell:
         """
@@ -41,4 +41,4 @@ rule all:
         "A test case."
     default_target: True
     input:
-        "results/module_demand_electricity/results/demand_electricity_polygon_profiles.parquet",
+        "results/module_demand_electricity/results/demand_electricity_test_profiles.parquet",

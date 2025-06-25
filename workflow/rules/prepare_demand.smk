@@ -3,7 +3,7 @@ rule demand_electricity_raster:
         "Disaggregate annual demand to raster."
     input:
         demand="resources/automatic/load_clean.parquet",
-        countries="resources/user/countries.geojson",
+        countries="resources/user/countries.parquet",
         population="resources/automatic/population_clean.tif",
     output:
         output_data="results/demand_electricity_raster.nc",
@@ -23,13 +23,13 @@ rule demand_electricity_polygon:
     input:
         demand_raster="results/demand_electricity_raster.nc",
         demand_profiles="results/demand_electricity_countries_profiles.parquet",
-        shapes="resources/user/shapes.parquet",
+        shapes="resources/user/shapes_{name_shapes}.parquet",
     output:
-        output_data="results/demand_electricity_polygon_profiles.parquet",
-        output_plot="results/demand_electricity_polygon_profiles.png",
-        output_map="results/demand_electricity_polygon_map.png",
+        output_data="results/demand_electricity_{name_shapes}_profiles.parquet",
+        output_plot="results/demand_electricity_{name_shapes}_profiles.png",
+        output_map="results/demand_electricity_{name_shapes}_map.png",
     log:
-        "logs/demand_electricity_polygon.log",
+        "logs/demand_electricity_{name_shapes}.log",
     conda:
         "../envs/gregor.yaml"
     script:
