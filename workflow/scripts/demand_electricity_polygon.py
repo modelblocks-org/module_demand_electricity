@@ -8,17 +8,36 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import rioxarray as rxr
 
+MW_to_GW = 1e-3
+GW_to_TW = 1e-3
+MW_to_TW = 1e-6
+
 
 def plot_profiles(profiles):
     """Plot electricity demand profiles."""
-    fig, ax = plt.subplots(figsize=(10, 6))
+    column = profiles.columns[0]
+    profiles_example = profiles[column]
+    profiles_example = profiles_example * MW_to_GW
+    annual_demand = profiles_example.sum() * GW_to_TW
+
+    fig, ax = plt.subplots(figsize=(7, 3))
+    profiles_example.plot(
+        ax=ax,
+        title=f"Annual electricity demand {column}: {annual_demand:.2f} TWh",
+        ylabel="Electricity demand [GW]",
+        xlabel="Time [h]",
+    )
 
     return fig
 
 
-def plot_map(shapes, demand):
+def plot_map(demand):
     """Plot annual electricity demand on a map."""
-    fig, ax = plt.subplots(figsize=(10, 10))
+    summed_demand = demand["sum"].sum() * MW_to_TW
+
+    fig, ax = plt.subplots(figsize=(5, 5))
+    demand.plot(column="sum", cmap="Reds", legend=True, ax=ax)
+    ax.set_title(f"Total annual electricity demand: {summed_demand:.0f} TWh")
 
     return fig
 
@@ -107,10 +126,10 @@ def main(
 
     demand_polygon_profiles.to_parquet(path_output_data)
 
-    plot_profiles(demand_polygon)
+    plot_profiles(demand_polygon_profiles)
     plt.savefig(path_output_plot)
 
-    plot_map(shapes, demand_polygon)
+    plot_map(demand_polygon)
     plt.savefig(path_output_map)
 
 
