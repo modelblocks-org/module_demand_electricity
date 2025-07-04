@@ -1,6 +1,7 @@
 rule clean_load:
     input:
-        "resources/automatic/load.csv",
+        load="resources/automatic/load.csv",
+        map_countries=workflow.source_path("../internal/map_countries_ENTSOE.yaml"),
     output:
         "resources/automatic/load_clean.parquet",
     log:
