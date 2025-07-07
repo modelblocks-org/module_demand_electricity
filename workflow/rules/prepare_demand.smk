@@ -6,7 +6,7 @@ rule demand_electricity_raster:
         countries="resources/user/countries.parquet",
         population="resources/automatic/population_clean.tif",
     output:
-        output_data="results/demand_electricity_raster.nc",
+        output_data="results/demand_electricity_raster.tif",
         output_profiles="results/demand_electricity_countries_profiles.parquet",
         output_map="results/demand_electricity_raster_map.png",
     log:
@@ -21,7 +21,7 @@ rule demand_electricity_polygon:
     message:
         "Aggregate annual demand to shapes and scale with profile."
     input:
-        demand_raster="results/demand_electricity_raster.nc",
+        demand_raster="results/demand_electricity_raster.tif",
         demand_profiles="results/demand_electricity_countries_profiles.parquet",
         shapes="resources/user/shapes_{name_shapes}.parquet",
     output:
