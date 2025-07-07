@@ -7,6 +7,7 @@ dependencies:
   - pycountry
   - pyarrow
   - fastparquet
+  - entsoe-py
   - numpy < 2.0.0
   - pip:
     - git+https://github.com/jnnr/gregor.git@main

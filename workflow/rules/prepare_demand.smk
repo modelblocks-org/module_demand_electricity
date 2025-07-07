@@ -2,7 +2,7 @@ rule demand_electricity_raster:
     message:
         "Disaggregate annual demand to raster."
     input:
-        demand="resources/automatic/load_clean.parquet",
+        demand="resources/automatic/load_entsoe.parquet",
         countries="resources/user/countries.parquet",
         population="resources/automatic/population_clean.tif",
     output:

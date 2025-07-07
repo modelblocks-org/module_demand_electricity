@@ -1,6 +1,24 @@
 """Rules to used to download automatic resource files."""
 
 
+rule download_load_entsoe:
+    message:
+        "Download electricity load from ENTSOE."
+    input:
+        country_codes_entsoe=workflow.source_path(
+            "../internal/map_countries_ENTSOE.yaml"
+        ),
+        token_entsoe="resources/user/token_entsoe.txt",
+    output:
+        "resources/automatic/load_entsoe.parquet",
+    log:
+        "logs/download_load_entsoe.log",
+    conda:
+        "../envs/gregor.yaml"
+    script:
+        "../scripts/download_load_entsoe.py"
+
+
 rule download_resources:
     message:
         "Download resources."
