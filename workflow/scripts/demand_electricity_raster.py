@@ -26,7 +26,7 @@ def main(
 ):
     """Main function."""
     demand = pd.read_parquet(path_demand)
-    countries = gpd.read_parquet(path_countries)
+    countries = gpd.read_parquet(path_countries).set_index("shape_id")
     population = rxr.open_rasterio(path_population)
     population = population.sel(band=1)
 
