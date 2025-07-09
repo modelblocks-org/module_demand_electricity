@@ -13,7 +13,8 @@ rule download_load_entsoe_api:
         start=internal["load_entsoe_api"]["start"],
         end=internal["load_entsoe_api"]["end"],
     output:
-        "resources/automatic/load_entsoe_api.parquet",
+        load="resources/automatic/load_entsoe_api.parquet",
+        plot="resources/automatic/load_entsoe_api.png",
     log:
         "logs/download_load_entsoe.log",
     conda:

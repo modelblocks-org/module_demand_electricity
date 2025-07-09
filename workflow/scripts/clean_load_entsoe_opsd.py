@@ -2,8 +2,10 @@
 
 import logging
 
+import matplotlib.pyplot as plt
 import pandas as pd
 import yaml
+from utils import plot_missing_values_heatmap
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +16,7 @@ def load_yaml(path):
         return yaml.safe_load(file)
 
 
-def main(path_raw_load, path_map_countries, path_output_load):
+def main(path_raw_load, path_map_countries, path_output_load, path_output_plot):
     """Main function."""
     load = pd.read_csv(path_raw_load)
     map_alpha_2_to_alpha_3 = load_yaml(path_map_countries)
@@ -30,8 +32,16 @@ def main(path_raw_load, path_map_countries, path_output_load):
     )
     load_pivot.index = pd.to_datetime(load_pivot.index).tz_localize(None)
 
-    load_pivot = load_pivot.to_parquet(path_output_load)
+    load_pivot.to_parquet(path_output_load)
+
+    plot_missing_values_heatmap(load_pivot)
+    plt.savefig(path_output_plot, bbox_inches="tight", dpi=300)
 
 
 if __name__ == "__main__":
-    main(snakemake.input.load, snakemake.input.map_countries, snakemake.output[0])
+    main(
+        snakemake.input.load,
+        snakemake.input.map_countries,
+        snakemake.output.load,
+        snakemake.output.plot,
+    )

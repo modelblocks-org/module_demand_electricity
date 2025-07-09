@@ -1,15 +1,16 @@
-rule clean_load:
+rule clean_load_entsoe_opsd:
     input:
         load="resources/automatic/load_entsoe_opsd.csv",
         map_countries=workflow.source_path("../internal/map_countries_ENTSOE.yaml"),
     output:
-        "resources/automatic/load_entsoe_opsd.parquet",
+        load="resources/automatic/load_entsoe_opsd.parquet",
+        plot="resources/automatic/load_entsoe_opsd.png",
     log:
         "logs/clean_load.log",
     conda:
         "../envs/shell.yaml"
     script:
-        "../scripts/clean_load.py"
+        "../scripts/clean_load_entsoe_opsd.py"
 
 
 rule clean_population:

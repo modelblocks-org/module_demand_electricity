@@ -2,10 +2,12 @@
 
 import logging
 
+import matplotlib.pyplot as plt
 import pandas as pd
 import yaml
 from entsoe import EntsoePandasClient
 from entsoe.exceptions import NoMatchingDataError
+from utils import plot_missing_values_heatmap
 
 logger = logging.getLogger(__name__)
 
@@ -55,4 +57,7 @@ if __name__ == "__main__":
 
     df = df.resample("1H").mean()
 
-    df.to_parquet(snakemake.output[0])
+    df.to_parquet(snakemake.output.load)
+
+    plot_missing_values_heatmap(df)
+    plt.savefig(snakemake.output.plot, bbox_inches="tight", dpi=300)
