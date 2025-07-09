@@ -1,9 +1,9 @@
 rule clean_load:
     input:
-        load="resources/automatic/load.csv",
+        load="resources/automatic/load_entsoe_opsd.csv",
         map_countries=workflow.source_path("../internal/map_countries_ENTSOE.yaml"),
     output:
-        "resources/automatic/load_clean.parquet",
+        "resources/automatic/load_entsoe_opsd.parquet",
     log:
         "logs/clean_load.log",
     conda:

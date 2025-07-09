@@ -1,7 +1,7 @@
 """Rules to used to download automatic resource files."""
 
 
-rule download_load_entsoe:
+rule download_load_entsoe_api:
     message:
         "Download electricity load from ENTSOE."
     input:
@@ -9,24 +9,27 @@ rule download_load_entsoe:
             "../internal/map_countries_ENTSOE.yaml"
         ),
         token_entsoe="resources/user/token_entsoe.txt",
+    params:
+        start=internal["load_entsoe_api"]["start"],
+        end=internal["load_entsoe_api"]["end"],
     output:
-        "resources/automatic/load_entsoe.parquet",
+        "resources/automatic/load_entsoe_api.parquet",
     log:
         "logs/download_load_entsoe.log",
     conda:
         "../envs/gregor.yaml"
     script:
-        "../scripts/download_load_entsoe.py"
+        "../scripts/download_load_entsoe_api.py"
 
 
 rule download_resources:
     message:
         "Download resources."
     params:
-        url_load=internal["resources"]["automatic"]["load"],
+        url_load=internal["resources"]["automatic"]["load_entsoe_opsd"],
         url_population=internal["resources"]["automatic"]["population"],
     output:
-        load="resources/automatic/load.csv",
+        load="resources/automatic/load_entsoe_opsd.csv",
         population="resources/automatic/population.zip",
     log:
         "logs/download_resources.log",
