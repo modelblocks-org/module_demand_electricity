@@ -53,6 +53,6 @@ if __name__ == "__main__":
 
     df.index = pd.to_datetime(df.index, utc=True)
 
-    df.resample("1H").mean()
+    df = df.resample("1H").mean()
 
     df.to_parquet(snakemake.output[0])
