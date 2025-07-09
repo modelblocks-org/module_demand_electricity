@@ -63,40 +63,46 @@ def apply_profiles(demand_polygon, shapes, demand_profiles):
         Demand profiles for each region.
 
     """
-    demand_region_annual = demand_polygon["sum"]
-    region_in_country = shapes["country_id"]
+    # drop regions whose country_id does not correspond to a demand_profile
+    country_id_of_region = shapes["country_id"]
     covered_countries = demand_profiles.columns
 
-    # limit to covered regions
-    regions_not_covered = set(region_in_country.unique()).difference(covered_countries)
-    logger.info(f"Regions not covered by profiles: {regions_not_covered}")
-    region_in_country_covered = region_in_country.loc[
-        region_in_country.isin(covered_countries)
-    ]
-    demand_region_annual_covered = demand_region_annual.loc[
-        demand_region_annual.index.isin(region_in_country_covered.index)
-    ]
+    countries_not_covered = set(country_id_of_region.unique()).difference(
+        covered_countries
+    )
+    regions_not_covered = country_id_of_region[
+        country_id_of_region.isin(countries_not_covered)
+    ].index.tolist()
 
-    # map profiles to regions
+    demand_polygon_covered = demand_polygon.loc[
+        ~demand_polygon.index.isin(regions_not_covered)
+    ]
+    logger.warning(
+        f"Regions {regions_not_covered} are not covered by any demand profile and have been dropped."
+    )
+
+    # assign profiles to regions
     demand_profiles_mapped = pd.DataFrame(
         {
-            region: demand_profiles[region_in_country[region]]
-            for region in region_in_country_covered.index
+            region: demand_profiles[country_id_of_region[region]]
+            for region in demand_polygon_covered.index
         }
     )
 
     # multiply with regional annual demand and normalize profiles
-    profiles_sum = demand_profiles_mapped.sum(axis=0)
-    profiles_region = demand_region_annual_covered[demand_profiles_mapped.columns].mul(
+    profiles_region = demand_polygon_covered[demand_profiles_mapped.columns].mul(
         demand_profiles_mapped
     )
+
+    # normalize profiles
+    profiles_sum = demand_profiles_mapped.sum(axis=0)
     profiles_region = profiles_region.div(profiles_sum, axis="columns")
-    profiles_region.columns.name = demand_region_annual_covered.index.name
+    profiles_region.columns.name = demand_polygon_covered.index.name
 
     # check if the sum of the profiles matches the annual demand
     pd.testing.assert_frame_equal(
-        profiles_region.sum(axis=0, skipna=False).to_frame(name="sum"),
-        demand_region_annual_covered.to_frame(name="sum"),
+        profiles_region.sum(axis=0).to_frame(name="sum"),
+        demand_polygon_covered.to_frame(name="sum"),
         # rtol=1e-5,
     )
     return profiles_region
@@ -122,7 +128,9 @@ def main(
         shapes.geometry,
     )
 
-    demand_polygon_profiles = apply_profiles(demand_polygon, shapes, demand_profiles)
+    demand_polygon_profiles = apply_profiles(
+        demand_polygon["sum"], shapes, demand_profiles
+    )
 
     demand_polygon_profiles.to_parquet(path_output_data)
 

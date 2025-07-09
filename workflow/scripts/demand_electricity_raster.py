@@ -12,7 +12,10 @@ import rioxarray as rxr
 def plot_map(shapes, demand):
     """Plot annual electricity demand on a map."""
     fig, ax = plt.subplots(figsize=(10, 10))
+    demand = demand.to_dataarray().sel(band=1)
+    print(demand)
 
+    demand.plot.imshow(cmap="viridis", vmin=0, vmax=19)
     return fig
 
 
@@ -40,6 +43,15 @@ def main(
     start = snakemake.config["temporal_scope"]["start"]
     end = snakemake.config["temporal_scope"]["end"]
     demand_filtered = demand_filtered.loc[start:end]
+
+    # drop columns with all zero or all NaN values
+    all_nan = demand_filtered.isna().all(axis=0)
+    all_zero = (demand_filtered == 0).all(axis=0)
+    logger.info(f"Dropping columns with all NaN: {all_nan.loc[all_nan].index.tolist()}")
+    logger.info(
+        f"Dropping columns with all zero: {all_zero.loc[all_zero].index.tolist()}"
+    )
+    demand_filtered = demand_filtered.loc[:, ~(all_nan | all_zero)]
 
     # aggregate demand over time
     demand_sum = demand_filtered.sum(axis=0).to_frame(name="demand")
