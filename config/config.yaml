@@ -7,3 +7,4 @@ spatial_scope:
   maxx: 37.
   miny: 30.
   maxy: 75.
+use_load: load_entsoe_api # load_entsoe_opsd or load_entsoe_api

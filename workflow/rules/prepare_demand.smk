@@ -2,7 +2,7 @@ rule demand_electricity_raster:
     message:
         "Disaggregate annual demand to raster."
     input:
-        demand=f"resources/automatic/{internal['use_load']}.parquet",
+        demand=f"resources/automatic/{config['use_load']}.parquet",
         countries="resources/user/countries.parquet",
         population="resources/automatic/population_clean.tif",
     output:

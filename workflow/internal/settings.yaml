@@ -8,5 +8,3 @@ resources:
 load_entsoe_api:
   start: "2015-01-01T00:00Z"
   end: "2020-12-31T23:00Z"
-
-use_load: load_entsoe_opsd # load_entsoe_opsd or load_entsoe_api
