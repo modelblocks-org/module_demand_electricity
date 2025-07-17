@@ -11,11 +11,16 @@ import rioxarray as rxr
 
 def plot_map(shapes, demand):
     """Plot annual electricity demand on a map."""
-    fig, ax = plt.subplots(figsize=(10, 10))
-    demand = demand.to_dataarray().sel(band=1)
-    print(demand)
+    fig, ax = plt.subplots(figsize=(6, 6), dpi=300)
 
-    demand.plot.imshow(cmap="viridis", vmin=0, vmax=19)
+    (
+        demand.to_dataarray()
+        .coarsen(x=5, y=5, boundary="trim")
+        .sum()
+        .plot(ax=ax, cmap="magma", vmin=0, vmax=10000, aspect=None)
+    )
+    shapes.boundary.plot(ax=ax, color="white", alpha=0.3, linewidth=0.5, aspect=None)
+
     return fig
 
 
@@ -69,8 +74,8 @@ def main(
 
     demand_filtered.to_parquet(path_output_profiles)
 
-    # plot_map(countries, demand_raster)
-    plt.savefig(path_output_map)
+    plot_map(countries, demand_raster)
+    plt.savefig(path_output_map, bbox_inches="tight")
 
 
 if __name__ == "__main__":
