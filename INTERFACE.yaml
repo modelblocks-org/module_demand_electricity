@@ -1,20 +1,21 @@
 # Module Input-Output structure for automated doc. generation
 resources:
   user:
-    user_message.md: "Example file emulating external files requested from a user."
+    "token_entsoe.txt": User token for ENTSO-E API access.
+    "countries.parquet": Country boundaries corresponding to the countries in the ENTSO-E dataset.
+    "shapes_{name_shapes}.parquet": Custom shapes for spatial aggregation.
   automatic:
-    dummy_readme.md: "Example file emulating downloads determined by internal settings."
+    "load_entsoe_opsd.parquet":
+    "load_entsoe_api.parquet":
+    "population.tif": Gridded population data.
+    "population_clean.tif": Gridded population data, clipped and cleaned.
+    "demand_electricity_raster.tif": Electricity demand disaggregated to raster.
+    "demand_electricity_countries_profiles.parquet": Electricity demand profile per country.
+    "load_entsoe_opsd.png": Plot of data gaps in ENTSO-E statistics for each country and year.
+    "demand_electricity_raster_map.png": Map of annual electricity demand disaggregated to raster.
 results:
-  combined_text.md: "Example file emulating module results."
-
-# Wildcard example:
-# resources:
-#   user:
-#     shapes_{resolution}.geojson: region geometries.
-#   automatic:
-#     technology_data.parquet: dataset with technology characteristics.
-# results:
-#   '{resolution}/tech_capacity.parquet': description of output data.
-#   '{resolution}/results_image.png': description of output image.
-# wildcards:
-#   resolution: description of the wildcard’s purpose.
+  "demand_electricity_{name_shapes}_MW.parquet": Electricity demand profile per custom shape in units of MW.
+  "demand_electricity_{name_shapes}_profiles.png": Profile of first shape's electricity demand.
+  "demand_electricity_{name_shapes}_map.png": Map of annual electricity demand aggregated to custom shapes.
+wildcards:
+  name_shapes: Name of the custom shape is a wildcard to allow multiple outputs based on different shapes.
