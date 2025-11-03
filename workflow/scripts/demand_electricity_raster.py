@@ -7,21 +7,7 @@ import gregor
 import matplotlib.pyplot as plt
 import pandas as pd
 import rioxarray as rxr
-
-
-def plot_map(shapes, demand):
-    """Plot annual electricity demand on a map."""
-    fig, ax = plt.subplots(figsize=(6, 6), dpi=300)
-
-    (
-        demand.to_dataarray()
-        .coarsen(x=5, y=5, boundary="trim")
-        .sum()
-        .plot(ax=ax, cmap="magma", vmin=0, vmax=10000, aspect=None)
-    )
-    shapes.boundary.plot(ax=ax, color="white", alpha=0.3, linewidth=0.5, aspect=None)
-
-    return fig
+from _plots import map_raster
 
 
 def main(
@@ -74,7 +60,7 @@ def main(
 
     demand_filtered.to_parquet(path_output_profiles)
 
-    plot_map(countries, demand_raster)
+    map_raster(countries, demand_raster)
     plt.savefig(path_output_map, bbox_inches="tight")
 
 

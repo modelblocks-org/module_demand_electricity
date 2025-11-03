@@ -5,9 +5,9 @@ import logging
 import matplotlib.pyplot as plt
 import pandas as pd
 import yaml
+from _plots import plot_missing_values_heatmap
 from entsoe import EntsoePandasClient
 from entsoe.exceptions import NoMatchingDataError
-from utils import plot_missing_values_heatmap
 
 logger = logging.getLogger(__name__)
 

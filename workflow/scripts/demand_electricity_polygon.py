@@ -7,39 +7,7 @@ import gregor
 import matplotlib.pyplot as plt
 import pandas as pd
 import rioxarray as rxr
-
-MW_to_GW = 1e-3
-GW_to_TW = 1e-3
-MW_to_TW = 1e-6
-
-
-def plot_profiles(profiles):
-    """Plot electricity demand profiles."""
-    column = profiles.columns[0]
-    profiles_example = profiles[column]
-    profiles_example = profiles_example * MW_to_GW
-    annual_demand = profiles_example.sum() * GW_to_TW
-
-    fig, ax = plt.subplots(figsize=(7, 3))
-    profiles_example.plot(
-        ax=ax,
-        title=f"Annual electricity demand {column}: {annual_demand:.2f} TWh",
-        ylabel="Electricity demand [GW]",
-        xlabel="Time [h]",
-    )
-
-    return fig
-
-
-def plot_map(demand):
-    """Plot annual electricity demand on a map."""
-    summed_demand = demand["sum"].sum() * MW_to_TW
-
-    fig, ax = plt.subplots(figsize=(5, 5))
-    demand.plot(column="sum", cmap="Reds", legend=True, ax=ax)
-    ax.set_title(f"Total annual electricity demand: {summed_demand:.0f} TWh")
-
-    return fig
+from _plots import map_polygon, plot_profiles
 
 
 def apply_profiles(demand_polygon, shapes, demand_profiles):
@@ -137,7 +105,7 @@ def main(
     plot_profiles(demand_polygon_profiles)
     plt.savefig(path_output_plot)
 
-    plot_map(demand_polygon)
+    map_polygon(demand_polygon)
     plt.savefig(path_output_map)
 
 
