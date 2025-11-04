@@ -85,13 +85,23 @@ def main(
     path_output_plot,
     path_output_map,
 ):
-    """Main function."""
+    """Aggregate raster demand to polygons and apply profile of the respective country."""
+    # load data
     demand_raster = rxr.open_rasterio(path_demand_raster)
     demand_profiles = pd.read_parquet(path_demand_profiles)
     shapes = gpd.read_parquet(path_shapes)
     shapes = Shapes.validate(shapes)
+
+    # use only shapes of class land
+    maritime_shapes = shapes.loc[shapes["shape_class"] == "maritime"]
+    if not maritime_shapes.empty:
+        logger.warning(
+            f"Dropping maritime shapes: {maritime_shapes['shape_id'].tolist()}"
+        )
+    shapes = shapes.loc[shapes["shape_class"] == "land"]
     shapes = shapes[["country_id", "geometry"]]
 
+    # aggregate raster to target shapes
     demand_polygon = gregor.aggregate.aggregate_raster_to_polygon(
         demand_raster.sel(
             band=1
@@ -99,10 +109,12 @@ def main(
         shapes.geometry,
     )
 
+    # apply profiles
     demand_polygon_profiles = apply_profiles(
         demand_polygon["sum"], shapes, demand_profiles
     )
 
+    # save results and plots
     demand_polygon_profiles.to_parquet(path_output_data)
 
     plot_profiles(demand_polygon_profiles)

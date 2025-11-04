@@ -6,21 +6,13 @@ import rioxarray as rxr
 from shapely.geometry import box
 
 
-def main(path_raw, path_clean):
+def main(path_raw, minx, miny, maxx, maxy, path_clean):
     """Main function."""
     population = rxr.open_rasterio(path_raw)
 
     # clip to spatial scope
     clipping_box = gpd.GeoDataFrame(
-        geometry=[
-            box(
-                snakemake.config["spatial_scope"]["minx"],
-                snakemake.config["spatial_scope"]["miny"],
-                snakemake.config["spatial_scope"]["maxx"],
-                snakemake.config["spatial_scope"]["maxy"],
-            )
-        ],
-        crs="EPSG:4326",
+        geometry=[box(minx, miny, maxx, maxy)], crs="EPSG:4326"
     )
 
     population = population.rio.clip(clipping_box.to_crs(population.rio.crs).geometry)
@@ -37,4 +29,11 @@ def main(path_raw, path_clean):
 
 
 if __name__ == "__main__":
-    main(snakemake.input[0], snakemake.output[0])
+    main(
+        path_raw=snakemake.input[0],
+        minx=snakemake.config["spatial_scope"]["minx"],
+        miny=snakemake.config["spatial_scope"]["miny"],
+        maxx=snakemake.config["spatial_scope"]["maxx"],
+        maxy=snakemake.config["spatial_scope"]["maxy"],
+        path_clean=snakemake.output[0],
+    )

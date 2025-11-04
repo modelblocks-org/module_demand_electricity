@@ -18,7 +18,7 @@ def load_yaml(path):
 
 
 def main(path_raw_load, path_map_countries, path_output_load, path_output_plot):
-    """Main function."""
+    """Clean ENTSO-E load data (units of MW), downloaded from open power system data (OPSD)."""
     load = pd.read_csv(path_raw_load)
     load = LoadENTSOE.validate(load)
     map_alpha_2_to_alpha_3 = load_yaml(path_map_countries)

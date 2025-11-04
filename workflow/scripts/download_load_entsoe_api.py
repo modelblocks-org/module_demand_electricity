@@ -25,12 +25,12 @@ def load_yaml(path):
         return yaml.safe_load(file)
 
 
-if __name__ == "__main__":
-    start = pd.Timestamp(snakemake.config["temporal_scope"]["start"], tz="UTC")
-    end = pd.Timestamp(snakemake.config["temporal_scope"]["end"], tz="UTC")
-    country_codes = load_yaml(snakemake.input.country_codes_entsoe)
-    token = load_txt(snakemake.input.token_entsoe)
-
+def main(start, end, country_codes, token, output_load, output_plot):
+    """Download load in MW via the ENTSO-E API."""
+    start = pd.Timestamp(start, tz="UTC")
+    end = pd.Timestamp(end, tz="UTC")
+    country_codes = load_yaml(country_codes)
+    token = load_txt(token)
     client = EntsoePandasClient(api_key=token)
 
     data = []
@@ -57,7 +57,18 @@ if __name__ == "__main__":
 
     df = df.resample("1H").mean()
 
-    df.to_parquet(snakemake.output.load)
+    df.to_parquet(output_load)
 
     plot_missing_values_heatmap(df)
-    plt.savefig(snakemake.output.plot, bbox_inches="tight", dpi=300)
+    plt.savefig(output_plot, bbox_inches="tight", dpi=300)
+
+
+if __name__ == "__main__":
+    main(
+        start=snakemake.config["temporal_scope"]["start"],
+        end=snakemake.config["temporal_scope"]["end"],
+        country_codes=snakemake.input.country_codes_entsoe,
+        token=snakemake.input.token_entsoe,
+        output_load=snakemake.output.load,
+        output_plot=snakemake.output.plot,
+    )

@@ -15,17 +15,22 @@ def main(
     path_demand,
     path_population,
     path_countries,
+    start,
+    end,
     path_output_data,
     path_output_profiles,
     path_output_map,
 ):
     """Main function."""
+    # load data
     demand = pd.read_parquet(path_demand)
     countries = gpd.read_parquet(path_countries)
     countries = Shapes.validate(countries)
+    population = rxr.open_rasterio(path_population)
+
+    # filter data
     countries = countries.set_index("country_id")
     countries = countries.loc[countries["shape_class"] == "land"]
-    population = rxr.open_rasterio(path_population)
     population = population.sel(band=1)
 
     # match load data with countries
@@ -34,9 +39,7 @@ def main(
     logger.info("Drop timeseries for missing countries", missing_countries)
     demand_filtered = demand.loc[:, demand.columns.isin(countries.index.unique())]
 
-    # filter demand
-    start = snakemake.config["temporal_scope"]["start"]
-    end = snakemake.config["temporal_scope"]["end"]
+    # filter demand to time range
     demand_filtered = demand_filtered.loc[start:end]
 
     # drop columns with all zero or all NaN values
@@ -70,10 +73,12 @@ def main(
 if __name__ == "__main__":
     logger = logging.getLogger(__name__)
     main(
-        snakemake.input.demand,
-        snakemake.input.population,
-        snakemake.input.countries,
-        snakemake.output.output_data,
-        snakemake.output.output_profiles,
-        snakemake.output.output_map,
+        path_demand=snakemake.input.demand,
+        path_population=snakemake.input.population,
+        path_countries=snakemake.input.countries,
+        start=snakemake.config["temporal_scope"]["start"],
+        end=snakemake.config["temporal_scope"]["end"],
+        path_output_data=snakemake.output.output_data,
+        path_output_profiles=snakemake.output.output_profiles,
+        path_output_map=snakemake.output.output_map,
     )

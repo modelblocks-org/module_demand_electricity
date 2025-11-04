@@ -1,8 +1,6 @@
 """Schemas for key files."""
 
 # ruff: noqa: UP007
-from pathlib import Path
-
 import pandas as pd
 import yaml
 from pandera.pandas import DataFrameModel, Field
@@ -16,22 +14,16 @@ def read_yaml(path):
         return yaml.safe_load(file)
 
 
-path_map_countries_ENTSOE = (
-    Path(__file__).parent.parent / "internal" / "map_countries_ENTSOE.yaml"
-)
-country_codes = read_yaml(path_map_countries_ENTSOE).values()
-
-
 class LoadENTSOE(DataFrameModel):
     class Config:
         coerce = True
         strict = False
 
-    region: Series[str]  # = Field(isin=[country_codes])
+    region: Series[str]
     "2-letter country code."
-    variable: Series[str]  #  = Field(isin=["load"])
+    variable: Series[str]
     "Variable."
-    attribute: Series[str] = Field(isin=["actual_entsoe_power_statistics"])
+    attribute: Series[str]
     "Attribute."
     utc_timestamp: Series[pd.Timestamp]
     "UTC timestamp."
