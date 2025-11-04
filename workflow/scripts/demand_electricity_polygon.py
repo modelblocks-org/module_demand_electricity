@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import rioxarray as rxr
 from _plots import map_polygon, plot_profiles
+from _schemas import Shapes
 
 
 def apply_profiles(demand_polygon, shapes, demand_profiles):
@@ -87,7 +88,9 @@ def main(
     """Main function."""
     demand_raster = rxr.open_rasterio(path_demand_raster)
     demand_profiles = pd.read_parquet(path_demand_profiles)
-    shapes = gpd.read_parquet(path_shapes)[["country_id", "geometry"]]
+    shapes = gpd.read_parquet(path_shapes)
+    shapes = Shapes.validate(shapes)
+    shapes = shapes[["country_id", "geometry"]]
 
     demand_polygon = gregor.aggregate.aggregate_raster_to_polygon(
         demand_raster.sel(

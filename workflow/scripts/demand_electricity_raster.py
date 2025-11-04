@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import rioxarray as rxr
 from _plots import map_raster
+from _schemas import Shapes
 
 
 def main(
@@ -20,7 +21,9 @@ def main(
 ):
     """Main function."""
     demand = pd.read_parquet(path_demand)
-    countries = gpd.read_parquet(path_countries).set_index("country_id")
+    countries = gpd.read_parquet(path_countries)
+    countries = Shapes.validate(countries)
+    countries = countries.set_index("country_id")
     countries = countries.loc[countries["shape_class"] == "land"]
     population = rxr.open_rasterio(path_population)
     population = population.sel(band=1)

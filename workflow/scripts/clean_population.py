@@ -22,7 +22,7 @@ def main(path_raw, path_clean):
         ],
         crs="EPSG:4326",
     )
-    print(population.rio.crs)
+
     population = population.rio.clip(clipping_box.to_crs(population.rio.crs).geometry)
 
     fill_value = population.attrs.get("_FillValue", np.nan)
