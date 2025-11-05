@@ -69,12 +69,27 @@ def apply_profiles(demand_polygon, shapes, demand_profiles):
     profiles_region.columns.name = demand_polygon_covered.index.name
 
     # check if the sum of the profiles matches the annual demand
-    pd.testing.assert_frame_equal(
-        profiles_region.sum(axis=0).to_frame(name="sum"),
-        demand_polygon_covered.to_frame(name="sum"),
-        # rtol=1e-5,
-    )
+    assert_series_equal(demand_polygon_covered, profiles_region.sum(axis=0))
+
     return profiles_region
+
+
+def assert_series_equal(s1: pd.Series, s2: pd.Series, tolerance: float = 1e-5):
+    """Assert that two pd.Series are equal.
+
+    More detailed reporting than pd.testing.assert_series_equal.
+    """
+    compare = s1.to_frame("left").join(s2.to_frame("right"))
+
+    is_equal = (compare["left"] - compare["right"]).abs() < tolerance
+
+    discrepancy = compare.loc[~is_equal]
+
+    discrepancy["difference"] = (discrepancy["left"] - discrepancy["right"]).abs()
+
+    assert is_equal.all(), (
+        f"Sum of profiles does not match annual demand: {discrepancy}"
+    )
 
 
 def main(
@@ -107,6 +122,14 @@ def main(
         ),  # TODO: Check why the band dim is introduced when disaggregating
         shapes.geometry,
     )
+
+    # check for NaN values and drop shapes with NaN demand
+    nan_values = demand_polygon.loc[demand_polygon["sum"].isna()]
+    if not nan_values.empty:
+        logger.warning(
+            f"Dropping shapes with NaN demand values: {nan_values.index.tolist()}"
+        )
+        demand_polygon = demand_polygon.loc[~demand_polygon["sum"].isna()]
 
     # apply profiles
     demand_polygon_profiles = apply_profiles(
