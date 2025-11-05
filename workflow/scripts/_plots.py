@@ -100,6 +100,6 @@ def map_polygon(demand):
 
     fig, ax = plt.subplots(figsize=(5, 5))
     demand.plot(column="sum", cmap="Reds", legend=True, ax=ax)
-    ax.set_title(f"Total annual electricity demand: {summed_demand:.0f} TWh")
+    ax.set_title(f"Total annual electricity demand:\n{summed_demand:.0f} TWh")
 
     return fig
