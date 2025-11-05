@@ -140,7 +140,7 @@ def main(
     demand_polygon_profiles.to_parquet(path_output_data)
 
     map_polygon(demand_polygon)
-    plt.savefig(path_output_map)
+    plt.savefig(path_output_map, bbox_inches="tight")
 
 
 if __name__ == "__main__":

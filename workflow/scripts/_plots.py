@@ -3,12 +3,15 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from matplotlib.colors import ListedColormap
+from matplotlib.colors import LinearSegmentedColormap, ListedColormap
 from matplotlib.dates import DateFormatter
 
 MW_to_GW = 1e-3
 GW_to_TW = 1e-3
 MW_to_TW = 1e-6
+
+
+WhiteToRed = LinearSegmentedColormap.from_list("WhiteToRed", ["#ffffff", "#ff0000"])
 
 
 def plot_missing_values_heatmap(df: pd.DataFrame):
@@ -87,7 +90,7 @@ def map_raster(shapes, demand):
     demand_coarse = demand_coarse.rio.write_crs(demand.rio.crs)
     demand_coarse = demand_coarse.rio.write_transform(demand.rio.transform())
 
-    demand_coarse.plot(ax=ax, cmap="magma", vmin=0, vmax=10000, aspect=None)
+    demand_coarse.plot(ax=ax, cmap=WhiteToRed, vmin=0, vmax=10000, aspect=None)
 
     shapes.boundary.plot(ax=ax, color="white", alpha=0.3, linewidth=0.5, aspect=None)
 
@@ -98,8 +101,15 @@ def map_polygon(demand):
     """Plot annual electricity demand on a map."""
     summed_demand = demand["sum"].sum() * MW_to_TW
 
-    fig, ax = plt.subplots(figsize=(5, 5))
-    demand.plot(column="sum", cmap="Reds", legend=True, ax=ax)
+    fig, ax = plt.subplots(figsize=(7, 6))
+    demand.plot(ax=ax, column="sum", cmap=WhiteToRed, legend=True, aspect=None)
+    demand.geometry.boundary.plot(
+        ax=ax, color="white", alpha=0.3, linewidth=0.5, aspect=None
+    )
+    demand.geometry.boundary.plot(
+        ax=ax, color="k", alpha=0.3, linewidth=0.3, aspect=None
+    )
+
     ax.set_title(f"Total annual electricity demand:\n{summed_demand:.0f} TWh")
 
     return fig
