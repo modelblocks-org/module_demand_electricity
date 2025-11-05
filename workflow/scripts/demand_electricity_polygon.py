@@ -99,7 +99,7 @@ def main(
             f"Dropping maritime shapes: {maritime_shapes['shape_id'].tolist()}"
         )
     shapes = shapes.loc[shapes["shape_class"] == "land"]
-    shapes = shapes[["country_id", "geometry"]]
+    shapes = shapes[["shape_id", "country_id", "geometry"]].set_index("shape_id")
 
     # aggregate raster to target shapes
     demand_polygon = gregor.aggregate.aggregate_raster_to_polygon(
