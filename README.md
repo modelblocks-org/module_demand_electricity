@@ -1,8 +1,15 @@
 # Data module for electricity demand in Europe
 
-This module prepares electricity demand timeseries for Europe at arbitrary resolution
+This data module prepares electricity demand timeseries for Europe at arbitrary resolution. The workflow consists of these steps:
 
-A modular `snakemake` workflow built for [`clio`](https://clio.readthedocs.io/) data modules.
+- Download ENTSO-E historical load profiles.
+- Download a gridded population dataset that serves as a disaggregation proxy.
+- Clean the raw data and clip population to ENTSO-E area.
+- Disaggregate the national annual load to raster, using population as weight.
+- Aggregate the annual load raster data to the target shapes.
+- Assign the corresponding national load profile to each region to get the final load profiles for the target shapes.
+
+This is a modular `snakemake` workflow built for [`clio`](https://clio.readthedocs.io/) data modules.
 
 ## Using this module
 
