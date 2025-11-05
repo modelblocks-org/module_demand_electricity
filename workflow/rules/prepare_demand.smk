@@ -26,7 +26,6 @@ rule demand_electricity_polygon:
         shapes="resources/user/shapes_{name_shapes}.parquet",
     output:
         output_data="results/demand_electricity_{name_shapes}_MW.parquet",
-        output_plot="results/demand_electricity_{name_shapes}_profiles.png",
         output_map="results/demand_electricity_{name_shapes}_map.png",
     log:
         "logs/demand_electricity_{name_shapes}.log",

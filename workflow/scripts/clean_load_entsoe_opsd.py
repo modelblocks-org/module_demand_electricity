@@ -5,7 +5,7 @@ import logging
 import matplotlib.pyplot as plt
 import pandas as pd
 import yaml
-from _plots import plot_missing_values_heatmap
+from _plots import plot_missing_values_heatmap, plot_national_profiles
 from _schemas import LoadENTSOE
 
 logger = logging.getLogger(__name__)
@@ -17,7 +17,13 @@ def load_yaml(path):
         return yaml.safe_load(file)
 
 
-def main(path_raw_load, path_map_countries, path_output_load, path_output_plot):
+def main(
+    path_raw_load,
+    path_map_countries,
+    output_load,
+    output_plot_missing,
+    output_plot_profiles,
+):
     """Clean ENTSO-E load data (units of MW), downloaded from open power system data (OPSD)."""
     load = pd.read_csv(path_raw_load)
     load = LoadENTSOE.validate(load)
@@ -36,16 +42,20 @@ def main(path_raw_load, path_map_countries, path_output_load, path_output_plot):
     )
     load_pivot.index = pd.to_datetime(load_pivot.index).tz_localize(None)
 
-    load_pivot.to_parquet(path_output_load)
+    load_pivot.to_parquet(output_load)
 
     plot_missing_values_heatmap(load_pivot)
-    plt.savefig(path_output_plot, bbox_inches="tight", dpi=300)
+    plt.savefig(output_plot_missing, bbox_inches="tight", dpi=300)
+
+    plot_national_profiles(load_pivot)
+    plt.savefig(output_plot_profiles, bbox_inches="tight", dpi=300)
 
 
 if __name__ == "__main__":
     main(
-        snakemake.input.load,
-        snakemake.input.map_countries,
-        snakemake.output.load,
-        snakemake.output.plot,
+        path_raw_load=snakemake.input.load,
+        path_map_countries=snakemake.input.map_countries,
+        output_load=snakemake.output.load,
+        output_plot_missing=snakemake.output.plot_missing,
+        output_plot_profiles=snakemake.output.plot_profiles,
     )

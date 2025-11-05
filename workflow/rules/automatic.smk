@@ -14,7 +14,8 @@ rule download_load_entsoe_api:
         end=internal["load_entsoe_api"]["end"],
     output:
         load="resources/automatic/load_entsoe_api.parquet",
-        plot="resources/automatic/load_entsoe_api.png",
+        plot_missing="resources/automatic/load_entsoe_api_missing.png",
+        plot_profiles="resources/automatic/load_entsoe_api_profiles.png",
     log:
         "logs/download_load_entsoe.log",
     conda:

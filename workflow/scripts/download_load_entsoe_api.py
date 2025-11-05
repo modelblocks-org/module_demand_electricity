@@ -5,7 +5,7 @@ import logging
 import matplotlib.pyplot as plt
 import pandas as pd
 import yaml
-from _plots import plot_missing_values_heatmap
+from _plots import plot_missing_values_heatmap, plot_national_profiles
 from entsoe import EntsoePandasClient
 from entsoe.exceptions import NoMatchingDataError
 
@@ -25,7 +25,15 @@ def load_yaml(path):
         return yaml.safe_load(file)
 
 
-def main(start, end, country_codes, token, output_load, output_plot):
+def main(
+    start,
+    end,
+    country_codes,
+    token,
+    output_load,
+    output_plot_missing,
+    output_plot_profiles,
+):
     """Download load in MW via the ENTSO-E API."""
     start = pd.Timestamp(start, tz="UTC")
     end = pd.Timestamp(end, tz="UTC")
@@ -60,7 +68,10 @@ def main(start, end, country_codes, token, output_load, output_plot):
     df.to_parquet(output_load)
 
     plot_missing_values_heatmap(df)
-    plt.savefig(output_plot, bbox_inches="tight", dpi=300)
+    plt.savefig(output_plot_missing, bbox_inches="tight", dpi=300)
+
+    plot_national_profiles(df)
+    plt.savefig(output_plot_profiles, bbox_inches="tight", dpi=300)
 
 
 if __name__ == "__main__":
@@ -70,5 +81,6 @@ if __name__ == "__main__":
         country_codes=snakemake.input.country_codes_entsoe,
         token=snakemake.input.token_entsoe,
         output_load=snakemake.output.load,
-        output_plot=snakemake.output.plot,
+        output_plot_missing=snakemake.output.plot_missing,
+        output_plot_profiles=snakemake.output.plot_profiles,
     )

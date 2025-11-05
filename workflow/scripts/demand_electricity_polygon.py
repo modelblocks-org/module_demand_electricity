@@ -7,7 +7,7 @@ import gregor
 import matplotlib.pyplot as plt
 import pandas as pd
 import rioxarray as rxr
-from _plots import map_polygon, plot_profiles
+from _plots import map_polygon
 from _schemas import Shapes
 
 
@@ -82,7 +82,6 @@ def main(
     path_demand_profiles,
     path_shapes,
     path_output_data,
-    path_output_plot,
     path_output_map,
 ):
     """Aggregate raster demand to polygons and apply profile of the respective country."""
@@ -117,9 +116,6 @@ def main(
     # save results and plots
     demand_polygon_profiles.to_parquet(path_output_data)
 
-    plot_profiles(demand_polygon_profiles)
-    plt.savefig(path_output_plot)
-
     map_polygon(demand_polygon)
     plt.savefig(path_output_map)
 
@@ -127,10 +123,9 @@ def main(
 if __name__ == "__main__":
     logger = logging.getLogger(__name__)
     main(
-        snakemake.input.demand_raster,
-        snakemake.input.demand_profiles,
-        snakemake.input.shapes,
-        snakemake.output.output_data,
-        snakemake.output.output_plot,
-        snakemake.output.output_map,
+        path_demand_raster=snakemake.input.demand_raster,
+        path_demand_profiles=snakemake.input.demand_profiles,
+        path_shapes=snakemake.input.shapes,
+        path_output_data=snakemake.output.output_data,
+        path_output_map=snakemake.output.output_map,
     )

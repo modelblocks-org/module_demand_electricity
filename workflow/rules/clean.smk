@@ -4,7 +4,8 @@ rule clean_load_entsoe_opsd:
         map_countries=workflow.source_path("../internal/map_countries_ENTSOE.yaml"),
     output:
         load="resources/automatic/load_entsoe_opsd.parquet",
-        plot="resources/automatic/load_entsoe_opsd.png",
+        plot_missing="resources/automatic/load_entsoe_opsd.png",
+        plot_profiles="resources/automatic/load_entsoe_opsd_profiles.png",
     log:
         "logs/clean_load.log",
     conda:
