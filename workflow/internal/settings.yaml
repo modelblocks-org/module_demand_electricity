@@ -8,3 +8,10 @@ resources:
 load_entsoe_api:
   start: "2015-01-01T00:00Z"
   end: "2020-12-31T23:00Z"
+
+population:
+  # Bounding box to clip population raster to ENTSO-E area
+  minx: -31.
+  miny: 27.
+  maxx: 39.
+  maxy: 81.

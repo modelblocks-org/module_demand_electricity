@@ -31,9 +31,9 @@ def main(path_raw, minx, miny, maxx, maxy, path_clean):
 if __name__ == "__main__":
     main(
         path_raw=snakemake.input[0],
-        minx=snakemake.config["spatial_scope"]["minx"],
-        miny=snakemake.config["spatial_scope"]["miny"],
-        maxx=snakemake.config["spatial_scope"]["maxx"],
-        maxy=snakemake.config["spatial_scope"]["maxy"],
+        minx=snakemake.params.minx,
+        miny=snakemake.params.miny,
+        maxx=snakemake.params.maxx,
+        maxy=snakemake.params.maxy,
         path_clean=snakemake.output[0],
     )
