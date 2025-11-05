@@ -7,14 +7,17 @@ rule copy_resources:
     message:
         "Example of a rule external to your module."
     input:
-        shapes="../files/shapes_test.parquet",
+        shapes_small="../files/shapes_NLD_NUTS2.parquet",
+        shapes_large="../files/shapes_Europe_NUTS2.parquet",
         countries="../files/shapes_national.parquet",
     output:
-        shapes="results/module_demand_electricity/resources/user/shapes_test.parquet",
+        shapes_small="results/module_demand_electricity/resources/user/shapes_NLD_NUTS2.parquet",
+        shapes_large="results/module_demand_electricity/resources/user/shapes_Europe_NUTS2.parquet",
         countries="results/module_demand_electricity/resources/user/countries.parquet",
     shell:
         """
-        cp {input.shapes} {output.shapes}
+        cp {input.shapes_small} {output.shapes_small}
+        cp {input.shapes_large} {output.shapes_large}
         cp {input.countries} {output.countries}
         """
 
@@ -35,10 +38,18 @@ module module_demand_electricity:
 use rule * from module_demand_electricity as module_demand_electricity_*
 
 
-# Request something from the module
-rule all:
+# Europe test case
+rule example_europe:
     message:
-        "A test case."
+        "A test case for Europe."
+    input:
+        "results/module_demand_electricity/results/demand_electricity_Europe_NUTS2_MW.parquet",
+
+
+# Netherlands test case
+rule example_nld:
+    message:
+        "A test case for Netherlands."
     default_target: True
     input:
-        "results/module_demand_electricity/results/demand_electricity_test_MW.parquet",
+        "results/module_demand_electricity/results/demand_electricity_NLD_NUTS2_MW.parquet",

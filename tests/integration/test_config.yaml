@@ -2,9 +2,4 @@ module_demand_electricity:
   temporal_scope:
     start: "2017-01-01"
     end: "2017-12-31"
-  spatial_scope:
-    minx: -3
-    maxx: 7.5
-    miny: 50.
-    maxy: 54.
   use_load: load_entsoe_api # load_entsoe_opsd or load_entsoe_api
