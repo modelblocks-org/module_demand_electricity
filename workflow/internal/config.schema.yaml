@@ -9,12 +9,12 @@ properties:
     properties:
       start:
         type: string
-        format: date-time
-        description: "Start date and time of the simulation in ISO 8601 format."
+        format: date
+        description: "Start date the simulation in ISO 8601 format (YYYY-MM-DD)."
       end:
         type: string
-        format: date-time
-        description: "End date and time of the simulation in ISO 8601 format."
+        format: date
+        description: "End date the simulation in ISO 8601 format (YYYY-MM-DD)."
     required:
       - start
       - end
