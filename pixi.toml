@@ -2,7 +2,7 @@
 name = "module_demand_electricity"
 authors = ["See AUTHORS file"]
 description = "This module prepares electricity demand timeseries for Europe at arbitrary resolution"
-license = "MIT"
+license = "Apache-2.0"
 readme = "README.md"
 channels = ["conda-forge", "bioconda"]
 platforms = ["win-64", "linux-64", "osx-arm64"]
