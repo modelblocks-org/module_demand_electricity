@@ -32,6 +32,7 @@ mkdocs-mermaid2-plugin = ">=1.2.1"
 [feature.docs.tasks]
 serve-docs = {cmd = "mkdocs serve"}
 build-docs = {cmd = "mkdocs build"}
+test-integration = {cmd = "pytest tests/clio_test.py"}
 
 [environments]
 docs = ["docs"]
