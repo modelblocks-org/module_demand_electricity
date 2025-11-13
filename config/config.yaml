@@ -1,7 +1,7 @@
 # A minimal example of how to configure this module
 temporal_scope:
-  start: 2017-01-01T00:00:00Z
-  end: 2017-01-03T23:59:59Z
+  start: "2017-01-01"
+  end: "2017-01-03"
 spatial_scope:
   minx: -15.8
   maxx: 37.
