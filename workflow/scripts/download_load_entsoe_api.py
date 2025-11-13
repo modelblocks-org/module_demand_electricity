@@ -4,6 +4,7 @@ import logging
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import pycountry
 import yaml
 from _plots import plot_missing_values_heatmap, plot_national_profiles
 from entsoe import EntsoePandasClient
@@ -37,13 +38,14 @@ def main(
     """Download load in MW via the ENTSO-E API."""
     start = pd.Timestamp(start, tz="UTC")
     end = pd.Timestamp(end, tz="UTC")
-    country_codes = load_yaml(country_codes)
     token = load_txt(token)
     client = EntsoePandasClient(api_key=token)
 
     data = []
-    for country_alpha_2, country_alpha_3 in country_codes.items():
-        logger.info(f"Downloading data for {country_alpha_2} from {start} to {end}")
+    for country_alpha_3 in country_codes:
+        logger.info(f"Downloading data for {country_alpha_3} from {start} to {end}")
+        country_alpha_2 = pycountry.countries.get(alpha_3=country_alpha_3).alpha_2
+
         try:
             df_country = client.query_load(
                 country_code=country_alpha_2, start=start, end=end
