@@ -5,8 +5,8 @@ resources:
     "countries.parquet": Country boundaries corresponding to the countries in the ENTSO-E dataset.
     "shapes_{name_shapes}.parquet": Custom shapes for spatial aggregation.
   automatic:
-    "load_entsoe_opsd.parquet":
-    "load_entsoe_api.parquet":
+    "load_entsoe_opsd.parquet": Historic electricity demand time series from ENTSO-E via OPSD.
+    "load_entsoe_api.parquet": Historic electricity demand time series from ENTSO-E API.
     "population.tif": Gridded population data.
     "population_clean.tif": Gridded population data, clipped and cleaned.
     "demand_electricity_raster.tif": Electricity demand disaggregated to raster.
