@@ -9,7 +9,7 @@ rule clean_load_entsoe_opsd:
     log:
         "logs/clean_load.log",
     conda:
-        "../envs/shell.yaml"
+        "../envs/gregor.yaml"
     script:
         "../scripts/clean_load_entsoe_opsd.py"
 
@@ -27,6 +27,6 @@ rule clean_population:
     log:
         "logs/clean_population.log",
     conda:
-        "../envs/shell.yaml"
+        "../envs/gregor.yaml"
     script:
         "../scripts/clean_population.py"
