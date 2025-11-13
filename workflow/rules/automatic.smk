@@ -5,11 +5,9 @@ rule download_load_entsoe_api:
     message:
         "Download electricity load from ENTSOE."
     input:
-        country_codes_entsoe=internal["load_entsoe_api"]["countries"],
         token_entsoe="resources/user/token_entsoe.txt",
     params:
-        start=internal["load_entsoe_api"]["start"],
-        end=internal["load_entsoe_api"]["end"],
+        country_codes_entsoe=internal["load_entsoe_api"]["countries"],
     output:
         load="resources/automatic/load_entsoe_api.parquet",
         plot_missing="resources/automatic/load_entsoe_api_missing.png",

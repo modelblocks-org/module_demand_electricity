@@ -80,7 +80,7 @@ if __name__ == "__main__":
     main(
         start=snakemake.config["temporal_scope"]["start"],
         end=snakemake.config["temporal_scope"]["end"],
-        country_codes=snakemake.input.country_codes_entsoe,
+        country_codes=snakemake.params.country_codes_entsoe,
         token=snakemake.input.token_entsoe,
         output_load=snakemake.output.load,
         output_plot_missing=snakemake.output.plot_missing,
