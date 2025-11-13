@@ -1,3 +1,4 @@
+<!--docs/index.md \"start\" -->
 # Data module for electricity demand in Europe
 
 This data module prepares electricity demand timeseries for Europe at arbitrary resolution. The workflow consists of these steps:
@@ -46,3 +47,4 @@ pixi shell    # activate this project's environment
 cd tests/integration/  # navigate to the integration example
 snakemake --use-conda  # run the workflow!
 ```
+<!--docs/index.md "end" -->

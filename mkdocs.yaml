@@ -64,4 +64,5 @@ markdown_extensions:
       anchorlink: true
 plugins:
   - search
+  - include-markdown
 copyright: Copyright &copy; since 2025 <a href="https://github.com/calliope-project/module_demand_electricity/blob/main/AUTHORS">module_demand_electricity contributors</a> (MIT licensed)

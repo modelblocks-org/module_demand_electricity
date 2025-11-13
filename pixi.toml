@@ -28,6 +28,7 @@ mkdocs-material = ">=9.6.7"
 
 [feature.docs.pypi-dependencies]
 mkdocs-mermaid2-plugin = ">=1.2.1"
+mkdocs-include-markdown-plugin = ">=7.2.0"
 
 [feature.docs.tasks]
 serve-docs = {cmd = "mkdocs serve"}
