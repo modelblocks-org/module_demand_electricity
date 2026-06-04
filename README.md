@@ -23,7 +23,7 @@ We use [`pixi`](https://pixi.sh/) as our package manager for development.
 Once installed, run the following to clone this repo and install all dependencies.
 
 ```shell
-git clone git@github.com:calliope-project/module_demand_electricity.git
+git clone git@github.com:modelblocks-org/module_demand_electricity.git
 cd module_demand_electricity
 pixi install --all
 ```
