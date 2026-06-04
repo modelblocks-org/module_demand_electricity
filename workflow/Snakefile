@@ -2,7 +2,20 @@ import yaml
 
 from snakemake.utils import min_version, validate
 
-min_version("8.10")
+min_version("9.19")
+
+
+# !!!!! IMPORTANT !!!!!
+# Define pathvars for all user resource files and result files
+# This allows users to re-wire how the module is used in their workflow with ease.
+pathvars:
+    # User resources
+    shapes="<resources>/user/{shape}.parquet",
+    shapes_national="<resources>/user/shapes_national.parquet",
+    token_entsoe="<resources>/user/token_entsoe.txt",
+    # Module results
+    demand="<results>/{shape}.parquet",
+    plot_map="<results>/{shape}.png",
 
 
 # Load the example configuration. This will be overridden by users.
@@ -29,14 +42,14 @@ include: "rules/prepare_demand.smk"
 
 
 rule all:
-    message:
-        "ERROR: Invalid `rule all:` call"
     default_target: True
     output:
         "INVALID",
     log:
-        stderr="logs/all.stderr",
+        stderr="<logs>/all.stderr",
     conda:
         "envs/shell.yaml"
+    message:
+        "ERROR: Invalid `rule all:` call"
     shell:
         'echo "This workflow must be called as a snakemake module." > {log.stderr}'

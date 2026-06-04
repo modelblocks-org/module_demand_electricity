@@ -1,12 +1,12 @@
 rule clean_load_entsoe_opsd:
     input:
-        load="resources/automatic/load_entsoe_opsd.csv",
+        load="<resources>/automatic/load_entsoe_opsd.csv",
     output:
-        load="resources/automatic/load_entsoe_opsd.parquet",
-        plot_missing="resources/automatic/load_entsoe_opsd.png",
-        plot_profiles="resources/automatic/load_entsoe_opsd_profiles.png",
+        load="<resources>/automatic/load_entsoe_opsd.parquet",
+        plot_missing="<resources>/automatic/load_entsoe_opsd.png",
+        plot_profiles="<resources>/automatic/load_entsoe_opsd_profiles.png",
     log:
-        "logs/clean_load_entsoe_opsd.log",
+        "<logs>/clean_load_entsoe_opsd.log",
     conda:
         "../envs/gregor.yaml"
     script:
@@ -15,17 +15,17 @@ rule clean_load_entsoe_opsd:
 
 rule clean_population:
     input:
-        "resources/automatic/population/GHS_POP_E2020_GLOBE_R2023A_54009_1000_V1_0.tif",
+        "<resources>/automatic/population/GHS_POP_E2020_GLOBE_R2023A_54009_1000_V1_0.tif",
     output:
-        "resources/automatic/population_clean.tif",
+        "<resources>/automatic/population_clean.tif",
+    log:
+        "<logs>/clean_population.log",
+    conda:
+        "../envs/gregor.yaml"
     params:
         minx=internal["population"]["minx"],
         miny=internal["population"]["miny"],
         maxx=internal["population"]["maxx"],
         maxy=internal["population"]["maxy"],
-    log:
-        "logs/clean_population.log",
-    conda:
-        "../envs/gregor.yaml"
     script:
         "../scripts/clean_population.py"
