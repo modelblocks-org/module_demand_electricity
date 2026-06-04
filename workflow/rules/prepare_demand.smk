@@ -1,7 +1,7 @@
 rule demand_electricity_raster:
     input:
         demand=f"<resources>/automatic/{config['use_load']}.parquet",
-        countries="<resources>/user/countries.parquet",
+        countries="<countries>",
         population="<resources>/automatic/population_clean.tif",
     output:
         output_data="<resources>/automatic/demand_electricity_raster.tif",

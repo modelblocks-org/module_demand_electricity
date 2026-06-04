@@ -3,7 +3,7 @@
 
 rule download_load_entsoe_api:
     input:
-        token_entsoe="<resources>/user/token_entsoe.txt",
+        token_entsoe="<token_entsoe>",
     output:
         load="<resources>/automatic/load_entsoe_api.parquet",
         plot_missing="<resources>/automatic/load_entsoe_api_missing.png",

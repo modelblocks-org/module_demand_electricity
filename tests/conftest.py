@@ -8,7 +8,7 @@ from urllib.request import urlretrieve
 import pytest
 
 TEST_FILES = (
-    "https://surfdrive.surf.nl/public.php/dav/files/8zLoYsfWz9rSLmn/?accept=zip"
+    "https://surfdrive.surf.nl/public.php/dav/files/nHZmPGBibmsWDrH/?accept=zip"
 )
 
 

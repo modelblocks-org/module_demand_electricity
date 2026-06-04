@@ -29,7 +29,7 @@ def integration_path(user_path: Path, module_path: Path):
     user_integ_dir = integration_dir / "resources/user/"
     files_to_copy = [
         "shapes_Europe_NUTS2.parquet",
-        "shapes_national.parquet",
+        "countries.parquet",
         "shapes_NLD_NUTS2.parquet",
         "token_entsoe.txt",
     ]
