@@ -7,18 +7,21 @@ rule copy_resources:
     message:
         "Example of a rule external to your module."
     input:
-        shapes_small="../files/shapes_NLD_NUTS2.parquet",
-        shapes_large="../files/shapes_Europe_NUTS2.parquet",
-        countries="../files/shapes_national.parquet",
+        shapes_small="resources/user/shapes_NLD_NUTS2.parquet",
+        shapes_large="resources/user/shapes_Europe_NUTS2.parquet",
+        countries="resources/user/shapes_national.parquet",
+        token="resources/user/token_entsoe.txt",
     output:
         shapes_small="results/module_demand_electricity/resources/user/shapes_NLD_NUTS2.parquet",
         shapes_large="results/module_demand_electricity/resources/user/shapes_Europe_NUTS2.parquet",
         countries="results/module_demand_electricity/resources/user/countries.parquet",
+        token="results/module_demand_electricity/resources/user/token_entsoe.txt",
     shell:
         """
         cp {input.shapes_small} {output.shapes_small}
         cp {input.shapes_large} {output.shapes_large}
         cp {input.countries} {output.countries}
+        cp {input.token} {output.token}
         """
 
 
