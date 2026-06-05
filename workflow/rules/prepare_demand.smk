@@ -23,8 +23,8 @@ rule demand_electricity_polygon:
         demand_profiles="<resources>/automatic/demand_electricity_countries_profiles.parquet",
         shapes="<resources>/user/shapes_{name_shapes}.parquet",
     output:
-        output_data="results/demand_electricity_{name_shapes}_MW.parquet",
-        output_map="results/demand_electricity_{name_shapes}_map.png",
+        output_data="<output_data>",
+        output_map="<output_map>",
     log:
         "<logs>/demand_electricity_polygon_{name_shapes}.log",
     conda:

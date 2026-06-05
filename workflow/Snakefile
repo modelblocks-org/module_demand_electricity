@@ -14,8 +14,8 @@ pathvars:
     countries="<resources>/user/countries.parquet",
     token_entsoe="<resources>/user/token_entsoe.txt",
     # Module results
-    demand="<results>/{shape}.parquet",
-    plot_map="<results>/{shape}.png",
+    output_data="<results>/demand_electricity_{name_shapes}_MW.parquet",
+    output_map="<results>/demand_electricity_{name_shapes}_map.png",
 
 
 # Load the example configuration. This will be overridden by users.
