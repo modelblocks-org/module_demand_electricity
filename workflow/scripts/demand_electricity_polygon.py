@@ -57,10 +57,9 @@ def apply_profiles(demand_polygon, shapes, demand_profiles):
             for region in demand_polygon_covered.index
         }
     )
-
     # multiply with regional annual demand and normalize profiles
-    profiles_region = demand_polygon_covered[demand_profiles_mapped.columns].mul(
-        demand_profiles_mapped
+    profiles_region = demand_profiles_mapped.mul(
+        demand_polygon_covered[demand_profiles_mapped.columns]
     )
 
     # normalize profiles
