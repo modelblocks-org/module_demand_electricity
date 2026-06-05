@@ -65,7 +65,7 @@ def main(
 
     df.index = pd.to_datetime(df.index, utc=True)
 
-    df = df.resample("1H").mean()
+    df = df.resample("1h").mean()
 
     df.to_parquet(output_load)
 

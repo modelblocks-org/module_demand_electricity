@@ -29,7 +29,7 @@ module module_demand_electricity:
     snakefile:
         "../../workflow/Snakefile"
     config:
-        config["module_demand_electricity"]
+        config["integration_test"]
 
 
 # rename all module rules with a prefix, to avoid naming conflicts.

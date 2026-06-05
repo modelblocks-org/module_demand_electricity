@@ -1,4 +1,4 @@
-module_demand_electricity:
+integration_test:
   temporal_scope:
     start: "2017-01-01"
     end: "2017-01-03"
