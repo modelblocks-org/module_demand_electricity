@@ -2,10 +2,8 @@
 
 import logging
 
-import matplotlib.pyplot as plt
 import pandas as pd
 import pycountry
-from _plots import plot_missing_values_heatmap, plot_national_profiles
 from _schemas import LoadENTSOE
 
 logger = logging.getLogger(__name__)
@@ -26,7 +24,7 @@ def get_map_alpha2_to_alpha3(countries_alpha_2):
     return map_alpha2_to_alpha3
 
 
-def main(path_raw_load, output_load, output_plot_missing, output_plot_profiles):
+def main(path_raw_load, output_load):
     """Clean ENTSO-E load data (units of MW), downloaded from open power system data (OPSD)."""
     load = pd.read_csv(path_raw_load)
     load = LoadENTSOE.validate(load)
@@ -50,17 +48,6 @@ def main(path_raw_load, output_load, output_plot_missing, output_plot_profiles):
     # save data and plots
     load_pivot.to_parquet(output_load)
 
-    plot_missing_values_heatmap(load_pivot)
-    plt.savefig(output_plot_missing, bbox_inches="tight", dpi=300)
-
-    plot_national_profiles(load_pivot)
-    plt.savefig(output_plot_profiles, bbox_inches="tight", dpi=300)
-
 
 if __name__ == "__main__":
-    main(
-        path_raw_load=snakemake.input.load,
-        output_load=snakemake.output.load,
-        output_plot_missing=snakemake.output.plot_missing,
-        output_plot_profiles=snakemake.output.plot_profiles,
-    )
+    main(path_raw_load=snakemake.input.load, output_load=snakemake.output.load)

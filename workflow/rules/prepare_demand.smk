@@ -6,7 +6,9 @@ rule demand_electricity_raster:
     output:
         output_data="<resources>/automatic/demand_electricity_raster.tif",
         output_profiles="<resources>/automatic/demand_electricity_countries_profiles.parquet",
-        output_map="<resources>/automatic/demand_electricity_raster_map.png",
+        plot_raster="<results>/demand_electricity_raster_map.png",
+        plot_missing="<results>/raw_load_entsoe_missing.png",
+        plot_profiles="<results>/raw_load_entsoe_profiles.png",
     log:
         "<logs>/demand_electricity_raster.log",
     conda:

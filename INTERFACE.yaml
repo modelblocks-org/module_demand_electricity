@@ -31,5 +31,14 @@ pathvars:
     demand_electricity_map:
       default: "<results>/demand_electricity_{shape}_map.png"
       description: Map of annual electricity demand aggregated to custom shapes.
+    plot_raster:
+      default: "<results>/demand_electricity_raster_map.png"
+      description: "Diagnostic plot showing the annual demand disaggregated to raster."
+    plot_missing:
+      default: "<results>/raw_load_entsoe_missing.png"
+      description: "Diagnostic plot showing missing values in the raw ENTSO-E data."
+    plot_profiles:
+      default: "<results>/raw_load_entsoe_profiles.png"
+      description: "Diagnostic plot showing the raw ENTSO-E profiles."
 wildcards:
   shape: Name of the custom shape is a wildcard to allow multiple outputs based on different shapes.

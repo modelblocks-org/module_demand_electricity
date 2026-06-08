@@ -3,8 +3,6 @@ rule clean_load_entsoe_opsd:
         load="<resources>/automatic/load_entsoe_opsd.csv",
     output:
         load="<resources>/automatic/load_entsoe_opsd.parquet",
-        plot_missing="<resources>/automatic/load_entsoe_opsd.png",
-        plot_profiles="<resources>/automatic/load_entsoe_opsd_profiles.png",
     log:
         "<logs>/clean_load_entsoe_opsd.log",
     conda:
