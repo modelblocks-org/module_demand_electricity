@@ -21,9 +21,10 @@ Data processing steps:
 
 - Download ENTSO-E historical load profiles.
 - Download a gridded population dataset that serves as a disaggregation proxy.
-- Clean the raw data and clip population to ENTSO-E area.
+- Filter and clean the raw load profile data.
+- Clip the population raster to the ENTSO-E area.
 - Disaggregate the national annual load to raster, using population as weight.
-- Aggregate the annual load raster data to the target shapes.
+- Re-aggregate the annual load raster data to the target shapes.
 - Assign the corresponding national load profile to each region to get the final load profiles for the target shapes.
 
 ## Configuration

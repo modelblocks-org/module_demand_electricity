@@ -31,19 +31,23 @@ def main(path_raw_load, output_load, output_plot_missing, output_plot_profiles):
     load = pd.read_csv(path_raw_load)
     load = LoadENTSOE.validate(load)
 
+    # filter the raw data
     load = load.loc[load["variable"] == "load"]
     load = load.loc[load["attribute"] == "actual_entsoe_power_statistics"]
 
+    # map country codes from alpha-2 to alpha-3
     map_alpha2_to_alpha3 = get_map_alpha2_to_alpha3(load["region"].unique())
 
     load = load.loc[load["region"].isin(map_alpha2_to_alpha3.keys())]
     load.loc[:, "region"] = load.loc[:, "region"].map(map_alpha2_to_alpha3)
 
+    # pivot the data to have one column per region
     load_pivot = pd.pivot(
         load, index=["utc_timestamp"], columns=["region"], values="data"
     )
     load_pivot.index = pd.to_datetime(load_pivot.index).tz_localize(None)
 
+    # save data and plots
     load_pivot.to_parquet(output_load)
 
     plot_missing_values_heatmap(load_pivot)
