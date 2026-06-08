@@ -43,7 +43,6 @@ def plot_missing_values_heatmap(df: pd.DataFrame):
 def plot_national_profiles(df: pd.DataFrame):
     """Plot electricity demand profiles for all countries."""
     profiles_GW = df * MW_to_GW
-    profiles_GW.loc[:, profiles_GW.isna().all()] = 0
     profiles_GW_d = profiles_GW.resample("1D").mean()
 
     n_profiles = df.shape[1]
@@ -52,6 +51,9 @@ def plot_national_profiles(df: pd.DataFrame):
     fig.subplots_adjust(wspace=0)
 
     for ax, column in zip(axs, profiles_GW.columns):
+        val_max = profiles_GW[column].max()
+        val_max = val_max if val_max > 0 else 1
+
         ax.plot(
             profiles_GW[column], profiles_GW.index, label=column, color="C0", alpha=0.3
         )
@@ -62,8 +64,16 @@ def plot_national_profiles(df: pd.DataFrame):
             color="k",
             linewidth=1,
         )
-        val_max = profiles_GW[column].max()
-        val_max = val_max if val_max > 0 else 1
+
+        # plot missing values as red
+        highlight_values(
+            ax, profiles_GW[column], lambda x: x.isna(), color="red", alpha=0.5
+        )
+        # plot zero values as violet
+        highlight_values(
+            ax, profiles_GW[column], lambda x: x == 0, color="violet", alpha=0.5
+        )
+        ax.invert_yaxis()
         ax.set_xlim(0, val_max * 1.1)
         ax.set_xticks([0, np.round(val_max, 1)])
         ax.set_xticklabels(["", np.round(val_max, 1)])
@@ -72,13 +82,38 @@ def plot_national_profiles(df: pd.DataFrame):
     for ax in axs.flatten()[1:]:
         ax.set_yticks([])
 
-    axs[0].set_ylabel("Time [h]")
-    axs[0].yaxis.set_major_formatter(DateFormatter("%Y-%m"))
-    axs[0].set_xlabel("Electricity load [GW]")
+    axs[0].set_ylabel("Time")
+    axs[0].yaxis.set_major_formatter(DateFormatter("%Y-%m-%d"))
+    axs[0].set_xlabel("Electricity load (GW)")
 
     fig.suptitle("National electricity load for ENTSO-E countries")
 
+    # legend below the plot
+    handles = {
+        plt.Line2D([0], [0], color="C0", alpha=0.3, label="Hourly load"),
+        plt.Line2D([0], [0], color="k", label="Daily mean load"),
+        plt.Rectangle((0, 0), 1, 1, color="violet", alpha=0.5, label="Zero values"),
+        plt.Rectangle((0, 0), 1, 1, color="red", alpha=0.5, label="Missing values"),
+    }
+    labels = [h.get_label() for h in handles]
+    fig.legend(handles=handles, labels=labels, loc="lower center", ncol=4)
+
     return fig
+
+
+def highlight_values(ax, series, condition, color="red", alpha=0.5):
+    """Highlight values in a plot based on a condition."""
+    mask = condition(series)
+
+    # if all values are True, color all
+    if mask.all():
+        ax.axhspan(series.index[0], series.index[-1], color=color, alpha=alpha)
+        return
+
+    begins = series.index[mask & ~mask.shift(1, fill_value=False)]
+    ends = series.index[mask & ~mask.shift(-1, fill_value=False)]
+    for begin, end in zip(begins, ends):
+        ax.axhspan(begin, end, color=color, alpha=alpha)
 
 
 def map_raster(shapes, demand):
