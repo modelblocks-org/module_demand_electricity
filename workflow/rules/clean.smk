@@ -13,7 +13,7 @@ rule clean_load_entsoe_opsd:
 
 rule clean_population:
     input:
-        "<resources>/automatic/population/GHS_POP_E2020_GLOBE_R2023A_54009_1000_V1_0.tif",
+        "<resources>/automatic/population_raw.tif",
     output:
         "<resources>/automatic/population_clean.tif",
     log:

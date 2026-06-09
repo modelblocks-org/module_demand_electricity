@@ -56,13 +56,12 @@ rule unzip:
     input:
         "<resources>/automatic/population.zip",
     output:
-        directory=directory("<resources>/automatic/population"),
-        population_clean="<resources>/automatic/population/GHS_POP_E2020_GLOBE_R2023A_54009_1000_V1_0.tif",
+        "<resources>/automatic/population_raw.tif",
     log:
         "<logs>/unzip.log",
-    conda:
-        "../envs/shell.yaml"
+    params:
+        internal_paths=internal["resources"]["automatic"]["population_tif"],
     message:
         "Unzip population data."
-    shell:
-        "unzip -o {input} -d {output.directory}"
+    wrapper:
+        "v9.8.0/utils/libarchive/extract"
