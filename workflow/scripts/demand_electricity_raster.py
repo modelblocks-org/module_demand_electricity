@@ -7,7 +7,7 @@ import gregor
 import matplotlib.pyplot as plt
 import pandas as pd
 import rioxarray as rxr
-from _plots import map_raster, plot_missing_values_heatmap, plot_national_profiles
+from _plots import map_raster, plot_national_profiles
 from _schemas import Shapes
 
 
@@ -20,7 +20,6 @@ def main(
     path_output_data,
     path_output_profiles,
     plot_raster,
-    plot_missing,
     plot_profiles,
 ):
     """Main function."""
@@ -71,9 +70,6 @@ def main(
     map_raster(countries, demand_raster)
     plt.savefig(plot_raster, bbox_inches="tight")
 
-    plot_missing_values_heatmap(demand)
-    plt.savefig(plot_missing, bbox_inches="tight", dpi=300)
-
     plot_national_profiles(demand)
     plt.savefig(plot_profiles, bbox_inches="tight", dpi=300)
 
@@ -89,6 +85,5 @@ if __name__ == "__main__":
         path_output_data=snakemake.output.output_data,
         path_output_profiles=snakemake.output.output_profiles,
         plot_raster=snakemake.output.plot_raster,
-        plot_missing=snakemake.output.plot_missing,
         plot_profiles=snakemake.output.plot_profiles,
     )

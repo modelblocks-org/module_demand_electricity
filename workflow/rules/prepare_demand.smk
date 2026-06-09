@@ -7,7 +7,6 @@ rule demand_electricity_raster:
         output_data="<resources>/automatic/demand_electricity_raster.tif",
         output_profiles="<resources>/automatic/demand_electricity_countries_profiles.parquet",
         plot_raster="<results>/demand_electricity_raster_map.png",
-        plot_missing="<results>/raw_load_entsoe_missing.png",
         plot_profiles="<results>/raw_load_entsoe_profiles.png",
     log:
         "<logs>/demand_electricity_raster.log",
