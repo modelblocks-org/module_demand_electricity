@@ -5,6 +5,7 @@ import logging
 import geopandas as gpd
 import gregor
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import rioxarray as rxr
 from _plots import map_raster, plot_national_profiles
@@ -33,6 +34,13 @@ def main(
     countries = countries.set_index("country_id")
     countries = countries.loc[countries["shape_class"] == "land"]
     population = population.sel(band=1)
+
+    # clip population data to
+
+    # fill NaN values in population with zeros (assuming NaN means no population)
+    fill_value = population.attrs.get("_FillValue", np.nan)
+    population = population.where(population != fill_value, 0)
+    population.attrs["_FillValue"] = 0
 
     # match load data with countries
     regions = demand.columns
