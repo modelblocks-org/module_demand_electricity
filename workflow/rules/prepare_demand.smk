@@ -27,7 +27,7 @@ rule demand_electricity_polygon:
         output_data="<output_data>",
         output_map="<output_map>",
     log:
-        "<logs>/demand_electricity_polygon_{name_shapes}.log",
+        "<logs>/{name_shapes}/demand_electricity_polygon.log",
     conda:
         "../envs/gregor.yaml"
     message:
