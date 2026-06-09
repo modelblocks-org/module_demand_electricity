@@ -34,9 +34,6 @@ pathvars:
     plot_raster:
       default: "<results>/demand_electricity_raster_map.png"
       description: "Diagnostic plot showing the annual demand disaggregated to raster."
-    plot_missing:
-      default: "<results>/raw_load_entsoe_missing.png"
-      description: "Diagnostic plot showing missing values in the raw ENTSO-E data."
     plot_profiles:
       default: "<results>/raw_load_entsoe_profiles.png"
       description: "Diagnostic plot showing the raw ENTSO-E profiles."
