@@ -1,8 +1,14 @@
 """Clean population data."""
 
+import sys
+from typing import TYPE_CHECKING, Any
+
 import geopandas as gpd
 import rioxarray as rxr
 from shapely.geometry import box
+
+if TYPE_CHECKING:
+    snakemake: Any
 
 
 def main(path_raw, minx, miny, maxx, maxy, path_clean):
@@ -20,6 +26,7 @@ def main(path_raw, minx, miny, maxx, maxy, path_clean):
 
 
 if __name__ == "__main__":
+    sys.stderr = open(snakemake.log[0], "w", buffering=1)
     main(
         path_raw=snakemake.input[0],
         minx=snakemake.params.minx,

@@ -1,6 +1,8 @@
 """Download electricity load data from ENTSO-E using the entsoe-py library."""
 
-import logging
+import sys
+from typing import TYPE_CHECKING, Any
+from warnings import warn
 
 import pandas as pd
 import pycountry
@@ -8,7 +10,8 @@ import yaml
 from entsoe import EntsoePandasClient
 from entsoe.exceptions import NoMatchingDataError
 
-logger = logging.getLogger(__name__)
+if TYPE_CHECKING:
+    snakemake: Any
 
 
 def load_txt(filepath):
@@ -28,12 +31,11 @@ def main(start, end, country_codes, token, output_load):
     """Download load in MW via the ENTSO-E API."""
     start = pd.Timestamp(start, tz="UTC")
     end = pd.Timestamp(end, tz="UTC")
-    token = load_txt(token)
+    token = load_txt(token).strip()
     client = EntsoePandasClient(api_key=token)
 
     data = []
     for country_alpha_3 in country_codes:
-        logger.info(f"Downloading data for {country_alpha_3} from {start} to {end}")
         country_alpha_2 = pycountry.countries.get(alpha_3=country_alpha_3).alpha_2
 
         try:
@@ -44,7 +46,7 @@ def main(start, end, country_codes, token, output_load):
             df_country.name = country_alpha_3
 
         except NoMatchingDataError:
-            logger.warning(
+            warn(
                 f"No data found for {country_alpha_2}/{country_alpha_3} in the given period: {start} to {end}"
             )
             df_country = pd.Series(name=country_alpha_3)
@@ -61,6 +63,7 @@ def main(start, end, country_codes, token, output_load):
 
 
 if __name__ == "__main__":
+    sys.stderr = open(snakemake.log[0], "w", buffering=1)
     main(
         start=snakemake.config["temporal_scope"]["start"],
         end=snakemake.config["temporal_scope"]["end"],

@@ -94,7 +94,7 @@ def map_raster(shapes, demand):
     """Plot annual electricity demand on a map."""
     fig, ax = plt.subplots(figsize=(7, 6), dpi=300)
 
-    demand_coarse = demand.to_dataarray().coarsen(x=5, y=5, boundary="trim").sum()
+    demand_coarse = demand.coarsen(x=5, y=5, boundary="trim").sum()
 
     demand_coarse = demand_coarse.rio.write_crs(demand.rio.crs)
     demand_coarse = demand_coarse.rio.write_transform(demand.rio.transform())

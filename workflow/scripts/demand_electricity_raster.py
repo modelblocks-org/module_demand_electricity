@@ -1,6 +1,8 @@
 """Prepare electricity demand timeseries at raster resolution."""
 
-import logging
+import sys
+from typing import TYPE_CHECKING, Any
+from warnings import warn
 
 import geopandas as gpd
 import gregor
@@ -10,6 +12,9 @@ import pandas as pd
 import rioxarray as rxr
 from _plots import map_raster, plot_national_profiles
 from _schemas import Shapes
+
+if TYPE_CHECKING:
+    snakemake: Any
 
 
 def main(
@@ -45,7 +50,8 @@ def main(
     # match load data with countries
     regions = demand.columns
     missing_countries = set(regions).difference(countries.index.unique())
-    logger.info("Drop timeseries for missing countries", missing_countries)
+    if missing_countries:
+        warn(f"Dropping timeseries for missing countries: {sorted(missing_countries)}")
     demand_filtered = demand.loc[:, demand.columns.isin(countries.index.unique())]
 
     # filter demand to time range
@@ -54,10 +60,10 @@ def main(
     # drop columns with all zero or all NaN values
     all_nan = demand_filtered.isna().all(axis=0)
     all_zero = (demand_filtered == 0).all(axis=0)
-    logger.info(f"Dropping columns with all NaN: {all_nan.loc[all_nan].index.tolist()}")
-    logger.info(
-        f"Dropping columns with all zero: {all_zero.loc[all_zero].index.tolist()}"
-    )
+    if all_nan.any():
+        warn(f"Dropping columns with all NaN: {all_nan.loc[all_nan].index.tolist()}")
+    if all_zero.any():
+        warn(f"Dropping columns with all zero: {all_zero.loc[all_zero].index.tolist()}")
     demand_filtered = demand_filtered.loc[:, ~(all_nan | all_zero)]
 
     # aggregate demand over time
@@ -83,7 +89,7 @@ def main(
 
 
 if __name__ == "__main__":
-    logger = logging.getLogger(__name__)
+    sys.stderr = open(snakemake.log[0], "w", buffering=1)
     main(
         path_demand=snakemake.input.demand,
         path_population=snakemake.input.population,

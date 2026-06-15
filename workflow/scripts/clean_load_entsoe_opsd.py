@@ -1,12 +1,15 @@
 """Clean load data from ENTSO-E."""
 
-import logging
+import sys
+from typing import TYPE_CHECKING, Any
+from warnings import warn
 
 import pandas as pd
 import pycountry
 from _schemas import LoadENTSOE
 
-logger = logging.getLogger(__name__)
+if TYPE_CHECKING:
+    snakemake: Any
 
 
 def get_map_alpha2_to_alpha3(countries_alpha_2):
@@ -17,7 +20,7 @@ def get_map_alpha2_to_alpha3(countries_alpha_2):
         if country is not None:
             map_alpha2_to_alpha3[alpha2] = country.alpha_3
         else:
-            logger.warning(
+            warn(
                 f"Country with alpha-2 code '{alpha2}' not found in pycountry."
             )
 
@@ -50,4 +53,5 @@ def main(path_raw_load, output_load):
 
 
 if __name__ == "__main__":
+    sys.stderr = open(snakemake.log[0], "w", buffering=1)
     main(path_raw_load=snakemake.input.load, output_load=snakemake.output.load)
