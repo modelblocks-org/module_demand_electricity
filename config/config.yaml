@@ -1,5 +1,5 @@
 # A minimal example of how to configure this module
 temporal_scope:
   start: "2017-01-01"
-  end: "2017-01-03"
+  end: "2018-01-01"
 use_load: load_entsoe_api # load_entsoe_opsd or load_entsoe_api
