@@ -113,9 +113,7 @@ def main(
     # use only shapes of class land
     maritime_shapes = shapes.loc[shapes["shape_class"] == "maritime"]
     if not maritime_shapes.empty:
-        warn(
-            f"Dropping maritime shapes: {maritime_shapes['shape_id'].tolist()}"
-        )
+        warn(f"Dropping maritime shapes: {maritime_shapes['shape_id'].tolist()}")
     shapes = shapes.loc[shapes["shape_class"] == "land"]
     shapes = shapes[["shape_id", "country_id", "geometry"]].set_index("shape_id")
 
@@ -130,9 +128,7 @@ def main(
     # check for NaN values and drop shapes with NaN demand
     nan_values = demand_polygon.loc[demand_polygon["sum"].isna()]
     if not nan_values.empty:
-        warn(
-            f"Dropping shapes with NaN demand values: {nan_values.index.tolist()}"
-        )
+        warn(f"Dropping shapes with NaN demand values: {nan_values.index.tolist()}")
         demand_polygon = demand_polygon.loc[~demand_polygon["sum"].isna()]
 
     # apply profiles

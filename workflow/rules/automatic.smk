@@ -8,13 +8,13 @@ rule download_load_entsoe_api:
         load="<resources>/automatic/load_entsoe_api.parquet",
     log:
         "<logs>/download_load_entsoe_api.log",
+    localrule: True
     conda:
         "../envs/gregor.yaml"
     params:
         country_codes_entsoe=internal["load_entsoe_api"]["countries"],
     message:
         "Download electricity load from ENTSOE."
-    localrule: True
     script:
         "../scripts/download_load_entsoe_api.py"
 
@@ -24,13 +24,13 @@ rule download_load_entsoe_opsd:
         load="<resources>/automatic/load_entsoe_opsd.csv",
     log:
         "<logs>/download_load_entsoe_opsd.log",
+    localrule: True
     conda:
         "../envs/shell.yaml"
     params:
         url_load=internal["resources"]["automatic"]["load_entsoe_opsd"],
     message:
         "Download load profiles from Open Power System Data (OPSD)."
-    localrule: True
     shell:
         """
         curl -sSLo {output.load:q} {params.url_load:q}
@@ -42,13 +42,13 @@ rule download_population:
         population="<resources>/automatic/population.zip",
     log:
         "<logs>/download_population.log",
+    localrule: True
     conda:
         "../envs/shell.yaml"
     params:
         url_population=internal["resources"]["automatic"]["population"],
     message:
         "Download population data."
-    localrule: True
     shell:
         """
         curl -sSLo {output.population:q} {params.url_population:q}
@@ -62,10 +62,10 @@ rule unzip:
         "<resources>/automatic/population_raw.tif",
     log:
         "<logs>/unzip.log",
+    localrule: True
     params:
         internal_paths=internal["resources"]["automatic"]["population_tif"],
     message:
         "Unzip population data."
-    localrule: True
     wrapper:
         "v9.8.0/utils/libarchive/extract"

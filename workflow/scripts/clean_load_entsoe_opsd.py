@@ -20,9 +20,7 @@ def get_map_alpha2_to_alpha3(countries_alpha_2):
         if country is not None:
             map_alpha2_to_alpha3[alpha2] = country.alpha_3
         else:
-            warn(
-                f"Country with alpha-2 code '{alpha2}' not found in pycountry."
-            )
+            warn(f"Country with alpha-2 code '{alpha2}' not found in pycountry.")
 
     return map_alpha2_to_alpha3
 
