@@ -11,16 +11,15 @@ rule clean_load_entsoe_opsd:
         "../scripts/clean_load_entsoe_opsd.py"
 
 
-rule clean_population_remote:
+rule clean_population:
     input:
+        like_vector="<shapes>",
         raster=rules.unzip_population.output[0],
     output:
-        path="<resources>/automatic/population_clean.tif",
+        path="<resources>/automatic/{shape}/population_clean.tif",
     log:
-        "<logs>/clean_population.log",
+        "<logs>/{shape}/clean_population.log",
     params:
-        bounds=internal["population"]["bounds"],
-        bounds_crs=internal["population"]["crs"],
         buffer=internal["population"]["buffer"],
     wrapper:
         "v9.5.0/geo/rasterio/clip"

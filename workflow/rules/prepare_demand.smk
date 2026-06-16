@@ -2,7 +2,7 @@ rule demand_electricity_raster:
     input:
         demand=f"<resources>/automatic/{config['use_load']}.parquet",
         shapes="<shapes>",
-        population="<resources>/automatic/population_clean.tif",
+        population="<resources>/automatic/{shape}/population_clean.tif",
     output:
         output_data="<resources>/automatic/{shape}/demand_electricity_raster.tif",
         output_profiles="<resources>/automatic/{shape}/demand_electricity_countries_profiles.parquet",
