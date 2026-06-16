@@ -75,7 +75,7 @@ def main(
 
     # disaggregate annual demand to raster resolution
     demand_raster = gregor.disaggregate.disaggregate_polygon_to_raster(
-        demand_sum, column="demand", proxy=population
+        demand_sum, column="demand", proxy=population.chunk("auto")
     )
     demand_raster.rio.to_raster(path_output_data)
 
