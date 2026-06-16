@@ -11,19 +11,16 @@ rule clean_load_entsoe_opsd:
         "../scripts/clean_load_entsoe_opsd.py"
 
 
-rule clean_population:
+rule clean_population_remote:
     input:
-        "<resources>/automatic/population_raw.tif",
+        raster=rules.unzip_population.output[0],
     output:
-        "<resources>/automatic/population_clean.tif",
+        path="<resources>/automatic/population_clean.tif",
+    params:
+        bounds=internal["population"]["bounds"],
+        bounds_crs=internal["population"]["crs"],
+        buffer=internal["population"]["buffer"]
     log:
         "<logs>/clean_population.log",
-    conda:
-        "../envs/gregor.yaml"
-    params:
-        minx=internal["population"]["minx"],
-        miny=internal["population"]["miny"],
-        maxx=internal["population"]["maxx"],
-        maxy=internal["population"]["maxy"],
-    script:
-        "../scripts/clean_population.py"
+    wrapper:
+        "v9.5.0/geo/rasterio/clip"

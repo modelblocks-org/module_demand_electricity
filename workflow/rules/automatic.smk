@@ -55,7 +55,7 @@ rule download_population:
         """
 
 
-rule unzip:
+rule unzip_population:
     input:
         "<resources>/automatic/population.zip",
     output:

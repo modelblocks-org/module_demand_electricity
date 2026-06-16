@@ -47,7 +47,6 @@ load_entsoe_api:
 
 population:
   # Bounding box to clip population raster to ENTSO-E area
-  minx: -13.
-  miny: 34.
-  maxx: 37.
-  maxy: 72.
+  bounds: [-13., 34., 37., 72.]
+  crs: "EPSG:4326"
+  buffer: 0
