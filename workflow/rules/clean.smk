@@ -16,11 +16,11 @@ rule clean_population_remote:
         raster=rules.unzip_population.output[0],
     output:
         path="<resources>/automatic/population_clean.tif",
+    log:
+        "<logs>/clean_population.log",
     params:
         bounds=internal["population"]["bounds"],
         bounds_crs=internal["population"]["crs"],
-        buffer=internal["population"]["buffer"]
-    log:
-        "<logs>/clean_population.log",
+        buffer=internal["population"]["buffer"],
     wrapper:
         "v9.5.0/geo/rasterio/clip"

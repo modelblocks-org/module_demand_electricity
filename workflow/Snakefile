@@ -13,7 +13,8 @@ pathvars:
     shapes="<resources>/user/{shape}/shapes.parquet",
     token_entsoe="<resources>/user/token_entsoe.txt",
     # Module results
-    output_data="<results>/{shape}/demand_electricity_MW.parquet"
+    output_data="<results>/{shape}/demand_electricity_MW.parquet",
+
 
 # Load the example configuration. This will be overridden by users.
 configfile: workflow.source_path("../config/config.yaml")
