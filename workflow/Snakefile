@@ -10,13 +10,10 @@ min_version("9.19")
 # This allows users to re-wire how the module is used in their workflow with ease.
 pathvars:
     # User resources
-    shapes="<resources>/user/{shape}.parquet",
-    countries="<resources>/user/countries.parquet",
+    shapes="<resources>/user/{shape}/shapes.parquet",
     token_entsoe="<resources>/user/token_entsoe.txt",
     # Module results
-    output_data="<results>/demand_electricity_{name_shapes}_MW.parquet",
-    output_map="<results>/demand_electricity_{name_shapes}_map.png",
-
+    output_data="<results>/{shape}/demand_electricity_MW.parquet"
 
 # Load the example configuration. This will be overridden by users.
 configfile: workflow.source_path("../config/config.yaml")

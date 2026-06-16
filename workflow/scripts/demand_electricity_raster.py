@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 def main(
     path_demand,
     path_population,
-    path_countries,
+    path_shapes,
     start,
     end,
     path_output_data,
@@ -31,13 +31,13 @@ def main(
     """Main function."""
     # load data
     demand = pd.read_parquet(path_demand)
-    countries = gpd.read_parquet(path_countries)
-    countries = Shapes.validate(countries)
+    shapes = gpd.read_parquet(path_shapes)
+    shapes = Shapes.validate(shapes)
     population = rxr.open_rasterio(path_population)
 
     # filter data
-    countries = countries.set_index("country_id")
-    countries = countries.loc[countries["shape_class"] == "land"]
+    countries = shapes.loc[shapes["shape_class"] == "land"]
+    countries = countries.dissolve(by="country_id")
     population = population.sel(band=1)
 
     # clip population data to
@@ -93,7 +93,7 @@ if __name__ == "__main__":
     main(
         path_demand=snakemake.input.demand,
         path_population=snakemake.input.population,
-        path_countries=snakemake.input.countries,
+        path_shapes=snakemake.input.shapes,
         start=snakemake.config["temporal_scope"]["start"],
         end=snakemake.config["temporal_scope"]["end"],
         path_output_data=snakemake.output.output_data,

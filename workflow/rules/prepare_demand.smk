@@ -1,15 +1,15 @@
 rule demand_electricity_raster:
     input:
         demand=f"<resources>/automatic/{config['use_load']}.parquet",
-        countries="<countries>",
+        shapes="<shapes>",
         population="<resources>/automatic/population_clean.tif",
     output:
-        output_data="<resources>/automatic/demand_electricity_raster.tif",
-        output_profiles="<resources>/automatic/demand_electricity_countries_profiles.parquet",
-        plot_raster="<results>/demand_electricity_raster_map.png",
-        plot_profiles="<results>/raw_load_entsoe_profiles.png",
+        output_data="<resources>/automatic/{shape}/demand_electricity_raster.tif",
+        output_profiles="<resources>/automatic/{shape}/demand_electricity_countries_profiles.parquet",
+        plot_raster="<results>/{shape}/demand_electricity_raster_map.png",
+        plot_profiles="<results>/{shape}/raw_load_entsoe_profiles.png",
     log:
-        "<logs>/demand_electricity_raster.log",
+        "<logs>/{shape}/demand_electricity_raster.log",
     conda:
         "../envs/gregor.yaml"
     message:
@@ -20,14 +20,14 @@ rule demand_electricity_raster:
 
 rule demand_electricity_polygon:
     input:
-        demand_raster="<resources>/automatic/demand_electricity_raster.tif",
-        demand_profiles="<resources>/automatic/demand_electricity_countries_profiles.parquet",
-        shapes="<resources>/user/shapes_{name_shapes}.parquet",
+        demand_raster="<resources>/automatic/{shape}/demand_electricity_raster.tif",
+        demand_profiles="<resources>/automatic/{shape}/demand_electricity_countries_profiles.parquet",
+        shapes="<shapes>",
     output:
         output_data="<output_data>",
-        output_map="<output_map>",
+        output_map="<results>/{shape}/demand_electricity_map.png",
     log:
-        "<logs>/{name_shapes}/demand_electricity_polygon.log",
+        "<logs>/{shape}/demand_electricity_polygon.log",
     conda:
         "../envs/gregor.yaml"
     message:
