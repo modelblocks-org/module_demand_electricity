@@ -37,11 +37,13 @@ def token_entsoe() -> Path:
     and if token_entsoe.txt is not present or empty,
     write the token to the file.
     """
-    if TOKEN_ENTSOE:
-        if TOKEN_FILE.exists():
-            if not TOKEN_FILE.read_text().strip() == "":
-                return TOKEN_FILE
-
+    if TOKEN_FILE.exists():
+        if not TOKEN_FILE.read_text().strip() == "":
+            return TOKEN_FILE
+    elif TOKEN_ENTSOE:
         TOKEN_FILE.write_text(TOKEN_ENTSOE)
-
+    else:
+        raise ValueError(
+            "`token_entsoe.txt` is missing or empty, and the environment variable TOKEN_ENTSOE is not set."
+        )
     return TOKEN_FILE
