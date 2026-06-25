@@ -19,7 +19,5 @@ rule clean_population:
         path="<resources>/automatic/{shape}/population_clean.tif",
     log:
         "<logs>/{shape}/clean_population.log",
-    params:
-        buffer=internal["population"]["buffer"],
     wrapper:
         "v9.5.0/geo/rasterio/clip"

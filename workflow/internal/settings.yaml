@@ -44,7 +44,3 @@ load_entsoe_api:
     - "SVN"
     - "SVK"
     - "TUR"
-
-population:
-  # Settings related to the clipping of the population raster to ENTSO-E area
-  buffer: 0
