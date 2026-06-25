@@ -13,11 +13,11 @@ rule clean_load_entsoe_opsd:
 
 rule clean_population:
     input:
-        like_vector="<shapes>",
+        vector="<shapes>",
         raster=rules.unzip_population.output[0],
     output:
         path="<resources>/automatic/{shape}/population_clean.tif",
     log:
         "<logs>/{shape}/clean_population.log",
     wrapper:
-        "v9.5.0/geo/rasterio/clip"
+        "v7.2.0/geo/rasterio/clip-geotiff"
