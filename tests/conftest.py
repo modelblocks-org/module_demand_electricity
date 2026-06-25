@@ -29,8 +29,8 @@ def user_path() -> Path:
     return user_dir
 
 
-@pytest.fixture
-def token_entsoe():
+@pytest.fixture(scope="session")
+def token_entsoe() -> Path:
     """Fixture to get token_entsoe.txt in CI.
 
     If an environment variable `TOKEN_ENTSOE` is set,
