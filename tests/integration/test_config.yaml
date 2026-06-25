@@ -2,4 +2,4 @@ integration_test:
   temporal_scope:
     start: "2017-01-01"
     end: "2017-01-03"
-  use_load: load_entsoe_api # load_entsoe_opsd or load_entsoe_api
+  use_load: entsoe_api # entsoe_opsd or entsoe_api

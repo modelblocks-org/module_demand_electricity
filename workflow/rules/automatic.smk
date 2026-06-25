@@ -12,7 +12,7 @@ rule download_load_entsoe_api:
     conda:
         "../envs/gregor.yaml"
     params:
-        country_codes_entsoe=internal["load_entsoe_api"]["countries"],
+        country_codes_entsoe=internal["entsoe_api"]["countries"],
     message:
         "Download electricity load from ENTSOE."
     script:
@@ -28,7 +28,7 @@ rule download_load_entsoe_opsd:
     conda:
         "../envs/shell.yaml"
     params:
-        url_load=internal["resources"]["automatic"]["load_entsoe_opsd"],
+        url_load=internal["resources"]["automatic"]["entsoe_opsd"],
     message:
         "Download load profiles from Open Power System Data (OPSD)."
     shell:
