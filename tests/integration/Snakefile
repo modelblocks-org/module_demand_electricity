@@ -23,6 +23,6 @@ use rule * from module_demand_electricity as module_demand_electricity_*
 rule example_nld:
     default_target: True
     input:
-        "results/NLD_NUTS2/demand_electricity_MW.parquet",
+        "results/EUROPE_S_C1_ADM1/demand_electricity_MW.parquet",
     message:
-        "A test case for Netherlands."
+        "A small test case for Montenegro."

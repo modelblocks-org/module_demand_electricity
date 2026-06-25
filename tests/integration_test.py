@@ -28,8 +28,7 @@ def integration_path(user_path: Path, module_path: Path):
         shutil.rmtree(integration_dir / "results/", ignore_errors=True)
     user_integ_dir = integration_dir / "resources/user"
     files_to_copy = {
-        "shapes_Europe_NUTS2.parquet": Path("Europe_NUTS2/shapes.parquet"),
-        "shapes_NLD_NUTS2.parquet": Path("NLD_NUTS2/shapes.parquet"),
+        "EUROPE_S_C1_ADM1/shapes.parquet": Path("EUROPE_S_C1_ADM1/shapes.parquet"),
         "token_entsoe.txt": Path("token_entsoe.txt"),
     }
     for source_file, destination in files_to_copy.items():

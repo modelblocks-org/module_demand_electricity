@@ -5,7 +5,7 @@ import subprocess
 
 def test_europe_nuts2(user_path):
     """Test that the Europe NUTS2 shapes are correct."""
-    target = "results/Europe_NUTS2/demand_electricity_MW.parquet"
+    target = "results/EUROPE_L_C34_ADM1/demand_electricity_MW.parquet"
     assert subprocess.run(
         f"snakemake --use-conda --cores 4 --forceall {target}",
         shell=True,

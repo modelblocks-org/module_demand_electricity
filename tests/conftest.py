@@ -1,16 +1,15 @@
 """Shared test fixtures."""
 
 import os
-import shutil
-import zipfile
 from pathlib import Path
 from urllib.request import urlretrieve
 
 import pytest
 
-TEST_FILES = (
-    "https://surfdrive.surf.nl/public.php/dav/files/nHZmPGBibmsWDrH/?accept=zip"
-)
+TEST_FILES = {
+    "EUROPE_S_C1_ADM1": "https://zenodo.org/records/20765043/files/EUROPE_S_C1_ADM1.parquet?download=1",
+    "EUROPE_L_C34_ADM1": "https://zenodo.org/records/20765043/files/EUROPE_L_C34_ADM1.parquet?download=1",
+}
 
 TOKEN_ENTSOE = os.getenv("TOKEN_ENTSOE")
 TOKEN_FILE = Path("resources/user/token_entsoe.txt")
@@ -20,15 +19,13 @@ TOKEN_FILE = Path("resources/user/token_entsoe.txt")
 def user_path() -> Path:
     """Download and unzip test files."""
     user_dir = Path("resources/user/")
-    # If test suite has been downloaded, assume everything is OK.
-    # Otherwise, cleanup and re-download.
-    if not Path(user_dir / "module_demand_electricity_files.zip").exists():
-        shutil.rmtree(user_dir, ignore_errors=True)
-        Path(user_dir).mkdir(parents=True, exist_ok=True)
-        test_zip = Path(user_dir / "module_demand_electricity_files.zip")
-        urlretrieve(TEST_FILES, test_zip)
-        with zipfile.ZipFile(test_zip, "r") as zfile:
-            zfile.extractall(user_dir)
+    # If test file have been downloaded, assume everything is OK.
+    # Otherwise, re-download.
+    for name, file_url in TEST_FILES.items():
+        file_path = user_dir / name / "shapes.parquet"
+        if not file_path.exists():
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+            urlretrieve(file_url, file_path)
     return user_dir
 
 
