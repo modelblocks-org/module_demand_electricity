@@ -1,6 +1,6 @@
 rule demand_electricity_raster:
     input:
-        demand=f"<resources>/automatic/{config['use_load']}.parquet",
+        demand=f"<resources>/automatic/load_{config['use_load']}.parquet",
         shapes="<shapes>",
         population="<resources>/automatic/{shape}/population_clean.tif",
     output:
