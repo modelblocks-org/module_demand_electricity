@@ -19,7 +19,7 @@ def module_path():
 
 
 @pytest.fixture(scope="module")
-def integration_path(user_path: Path, module_path: Path):
+def integration_path(user_path: Path, module_path: Path, token_entsoe: Path):
     """Ensures the minimal integration test is ready."""
     integration_dir = Path(module_path / "tests/integration")
     if integration_dir.exists():
@@ -69,7 +69,7 @@ def test_snakemake_all_failure(module_path):
     assert "INVALID" in str(process.stderr)
 
 
-def test_snakemake_integration_testing(integration_path, token_entsoe):
+def test_snakemake_integration_testing(integration_path):
     """Run a light-weight test simulating someone using this module."""
     assert subprocess.run(
         "snakemake --use-conda --cores 1", shell=True, check=True, cwd=integration_path

@@ -39,3 +39,5 @@ def token_entsoe():
     """
     if TOKEN_ENTSOE and not TOKEN_FILE.exists() or TOKEN_FILE.read_text().strip() == "":
         TOKEN_FILE.write_text(TOKEN_ENTSOE)
+
+    return TOKEN_FILE
