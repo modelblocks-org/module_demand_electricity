@@ -8,6 +8,7 @@ rule download_load_entsoe_api:
         load="<resources>/automatic/load_entsoe_api.parquet",
     log:
         "<logs>/download_load_entsoe_api.log",
+    localrule: True
     conda:
         "../envs/gregor.yaml"
     params:
@@ -23,6 +24,7 @@ rule download_load_entsoe_opsd:
         load="<resources>/automatic/load_entsoe_opsd.csv",
     log:
         "<logs>/download_load_entsoe_opsd.log",
+    localrule: True
     conda:
         "../envs/shell.yaml"
     params:
@@ -31,7 +33,7 @@ rule download_load_entsoe_opsd:
         "Download load profiles from Open Power System Data (OPSD)."
     shell:
         """
-        curl -sSLo {output.load} '{params.url_load}'
+        curl -sSLo {output.load:q} {params.url_load:q}
         """
 
 
@@ -40,6 +42,7 @@ rule download_population:
         population="<resources>/automatic/population.zip",
     log:
         "<logs>/download_population.log",
+    localrule: True
     conda:
         "../envs/shell.yaml"
     params:
@@ -48,17 +51,18 @@ rule download_population:
         "Download population data."
     shell:
         """
-        curl -sSLo {output.population} '{params.url_population}'
+        curl -sSLo {output.population:q} {params.url_population:q}
         """
 
 
-rule unzip:
+rule unzip_population:
     input:
         "<resources>/automatic/population.zip",
     output:
         "<resources>/automatic/population_raw.tif",
     log:
         "<logs>/unzip.log",
+    localrule: True
     params:
         internal_paths=internal["resources"]["automatic"]["population_tif"],
     message:

@@ -15,27 +15,15 @@ pathvars:
     token_entsoe:
       default: "<resources>/user/token_entsoe.txt"
       description: "User token for ENTSO-E API access."
-    countries:
-      default: "<resources>/user/countries.parquet"
-      description: Country boundaries corresponding to the countries in the ENTSO-E dataset.
     shapes:
-      default: "<resources>/user/shapes_{shape}.parquet"
-      description: Shapes to aggregate the output data to.
+      default: "<resources>/user/{shape}/shapes.parquet"
+      description: >
+        Shapes to aggregate the output data to.
+        IMPORTANT: they must add up to the full spatial extent of the country.
+        The module's processing requires it.
   results:
     demand_electricity_MW:
-      default: "<results>/demand_electricity_{shape}_MW.parquet"
+      default: "<results>/{shape}/demand_electricity_MW.parquet"
       description: Electricity demand profile per custom shape in units of MW.
-    demand_electricity_profiles:
-      default: "<results>/demand_electricity_{shape}_profiles.png"
-      description: Plot of profile of first shape's electricity demand.
-    demand_electricity_map:
-      default: "<results>/demand_electricity_{shape}_map.png"
-      description: Map of annual electricity demand aggregated to custom shapes.
-    plot_raster:
-      default: "<results>/demand_electricity_raster_map.png"
-      description: "Diagnostic plot showing the annual demand disaggregated to raster."
-    plot_profiles:
-      default: "<results>/raw_load_entsoe_profiles.png"
-      description: "Diagnostic plot showing the raw ENTSO-E profiles."
 wildcards:
   shape: Name of the custom shape is a wildcard to allow multiple outputs based on different shapes.

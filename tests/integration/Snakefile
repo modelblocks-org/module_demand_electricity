@@ -4,12 +4,11 @@ configfile: workflow.source_path("./test_config.yaml")
 
 # Import the module and configure it.
 # `snakefile:` specifies the module. It can use file paths and special github(...) / gitlab(...) markers
-# `prefix:` re-routes all input/output paths of the module, helping to avoid file conflicts.
+# `pathvars:` re-wires the location of user resources, intermediary module files, and module results.
 module module_demand_electricity:
     pathvars:
-        shapes="resources/user/shapes_{shape}.parquet",
+        shapes="resources/user/{shape}/shapes.parquet",
         token_entsoe="resources/user/token_entsoe.txt",
-        countries="resources/user/countries.parquet",
     snakefile:
         "../../workflow/Snakefile"
     config:
@@ -20,18 +19,10 @@ module module_demand_electricity:
 use rule * from module_demand_electricity as module_demand_electricity_*
 
 
-# Europe test case
-rule example_europe:
-    input:
-        "results/demand_electricity_Europe_NUTS2_MW.parquet",
-    message:
-        "A test case for Europe."
-
-
 # Netherlands test case
 rule example_nld:
     default_target: True
     input:
-        "results/demand_electricity_NLD_NUTS2_MW.parquet",
+        "results/NLD_NUTS2/demand_electricity_MW.parquet",
     message:
         "A test case for Netherlands."

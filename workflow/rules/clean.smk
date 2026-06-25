@@ -13,17 +13,13 @@ rule clean_load_entsoe_opsd:
 
 rule clean_population:
     input:
-        "<resources>/automatic/population_raw.tif",
+        like_vector="<shapes>",
+        raster=rules.unzip_population.output[0],
     output:
-        "<resources>/automatic/population_clean.tif",
+        path="<resources>/automatic/{shape}/population_clean.tif",
     log:
-        "<logs>/clean_population.log",
-    conda:
-        "../envs/gregor.yaml"
+        "<logs>/{shape}/clean_population.log",
     params:
-        minx=internal["population"]["minx"],
-        miny=internal["population"]["miny"],
-        maxx=internal["population"]["maxx"],
-        maxy=internal["population"]["maxy"],
-    script:
-        "../scripts/clean_population.py"
+        buffer=internal["population"]["buffer"],
+    wrapper:
+        "v9.5.0/geo/rasterio/clip"

@@ -1,6 +1,8 @@
 """Prepare electricity demand timeseries, aggregated to shapes."""
 
-import logging
+import sys
+from typing import TYPE_CHECKING, Any
+from warnings import warn
 
 import geopandas as gpd
 import gregor
@@ -9,6 +11,9 @@ import pandas as pd
 import rioxarray as rxr
 from _plots import map_polygon
 from _schemas import Shapes
+
+if TYPE_CHECKING:
+    snakemake: Any
 
 
 def apply_profiles(demand_polygon, shapes, demand_profiles):
@@ -46,7 +51,7 @@ def apply_profiles(demand_polygon, shapes, demand_profiles):
     demand_polygon_covered = demand_polygon.loc[
         ~demand_polygon.index.isin(regions_not_covered)
     ]
-    logger.warning(
+    warn(
         f"Regions {regions_not_covered} are not covered by any demand profile and have been dropped."
     )
 
@@ -108,9 +113,7 @@ def main(
     # use only shapes of class land
     maritime_shapes = shapes.loc[shapes["shape_class"] == "maritime"]
     if not maritime_shapes.empty:
-        logger.warning(
-            f"Dropping maritime shapes: {maritime_shapes['shape_id'].tolist()}"
-        )
+        warn(f"Dropping maritime shapes: {maritime_shapes['shape_id'].tolist()}")
     shapes = shapes.loc[shapes["shape_class"] == "land"]
     shapes = shapes[["shape_id", "country_id", "geometry"]].set_index("shape_id")
 
@@ -125,9 +128,7 @@ def main(
     # check for NaN values and drop shapes with NaN demand
     nan_values = demand_polygon.loc[demand_polygon["sum"].isna()]
     if not nan_values.empty:
-        logger.warning(
-            f"Dropping shapes with NaN demand values: {nan_values.index.tolist()}"
-        )
+        warn(f"Dropping shapes with NaN demand values: {nan_values.index.tolist()}")
         demand_polygon = demand_polygon.loc[~demand_polygon["sum"].isna()]
 
     # apply profiles
@@ -143,7 +144,7 @@ def main(
 
 
 if __name__ == "__main__":
-    logger = logging.getLogger(__name__)
+    sys.stderr = open(snakemake.log[0], "w", buffering=1)
     main(
         path_demand_raster=snakemake.input.demand_raster,
         path_demand_profiles=snakemake.input.demand_profiles,

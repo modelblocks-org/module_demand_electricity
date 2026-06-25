@@ -46,8 +46,5 @@ load_entsoe_api:
     - "TUR"
 
 population:
-  # Bounding box to clip population raster to ENTSO-E area
-  minx: -13.
-  miny: 34.
-  maxx: 37.
-  maxy: 72.
+  # Settings related to the clipping of the population raster to ENTSO-E area
+  buffer: 0
