@@ -19,6 +19,8 @@ jobs:
       - name: Setup pixi
         uses: prefix-dev/setup-pixi@v0.8.3
       - name: Run integration tests
+        env: # Set the secret as an environment variable
+          entsoe_token: ${{ secrets.ENTSOE_TOKEN }}
         id: tests
         run: pixi run test-integration
         continue-on-error: true

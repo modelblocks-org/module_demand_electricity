@@ -70,7 +70,7 @@ def test_snakemake_all_failure(module_path):
     assert "INVALID" in str(process.stderr)
 
 
-def test_snakemake_integration_testing(integration_path):
+def test_snakemake_integration_testing(integration_path, token_entsoe):
     """Run a light-weight test simulating someone using this module."""
     assert subprocess.run(
         "snakemake --use-conda --cores 1", shell=True, check=True, cwd=integration_path
