@@ -37,7 +37,11 @@ def token_entsoe() -> Path:
     and if token_entsoe.txt is not present or empty,
     write the token to the file.
     """
-    if TOKEN_ENTSOE and not TOKEN_FILE.exists() or TOKEN_FILE.read_text().strip() == "":
+    if TOKEN_ENTSOE:
+        if TOKEN_FILE.exists():
+            if not TOKEN_FILE.read_text().strip() == "":
+                return TOKEN_FILE
+
         TOKEN_FILE.write_text(TOKEN_ENTSOE)
 
     return TOKEN_FILE
