@@ -1,0 +1,53 @@
+import yaml
+
+from snakemake.utils import min_version, validate
+
+min_version("9.19")
+
+
+# !!!!! IMPORTANT !!!!!
+# Define pathvars for all user resource files and result files
+# This allows users to re-wire how the module is used in their workflow with ease.
+pathvars:
+    # User resources
+    shapes="<resources>/user/{shape}/shapes.parquet",
+    token_entsoe="<resources>/user/token_entsoe.txt",
+    # Module results
+    output_data="<results>/{shape}/demand_electricity_MW.parquet",
+
+
+# Load the example configuration. This will be overridden by users.
+configfile: workflow.source_path("../config/config.yaml")
+
+
+# Validate the configuration using the schema file.
+validate(config, workflow.source_path("internal/config.schema.yaml"))
+
+# Load internal settings separately so users cannot modify them.
+with open(workflow.source_path("internal/settings.yaml"), "r") as f:
+    internal = yaml.safe_load(f)
+
+# Load python files in scripts that are used in other scripts, but not run itself.
+# This is necessary for integrating the snakemake module via reference to GitHub.
+workflow.source_path("scripts/_plots.py")
+workflow.source_path("scripts/_schemas.py")
+
+
+# Add all your includes here.
+include: "rules/automatic.smk"
+include: "rules/clean.smk"
+include: "rules/prepare_demand.smk"
+
+
+rule all:
+    default_target: True
+    output:
+        "INVALID",
+    log:
+        stderr="<logs>/all.stderr",
+    conda:
+        "envs/shell.yaml"
+    message:
+        "ERROR: Invalid `rule all:` call"
+    shell:
+        'echo "This workflow must be called as a snakemake module." > {log.stderr}'

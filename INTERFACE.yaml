@@ -1,0 +1,29 @@
+# Module Input-Output structure for automated doc. generation
+pathvars:
+  snakemake_defaults:
+    logs:
+      default: "<logs>"
+      description: location of rule log files.
+    resources:
+      default: "<resources>"
+      description: "location of module resource files."
+    results:
+      default: "<results>"
+      description: "location of module results."
+
+  user_resources:
+    token_entsoe:
+      default: "<resources>/user/token_entsoe.txt"
+      description: "User token for ENTSO-E API access."
+    shapes:
+      default: "<resources>/user/{shape}/shapes.parquet"
+      description: >
+        Shapes to aggregate the output data to.
+        IMPORTANT: they must add up to the full spatial extent of the country.
+        The module's processing requires it.
+  results:
+    demand_electricity_MW:
+      default: "<results>/{shape}/demand_electricity_MW.parquet"
+      description: Electricity demand profile per custom shape in units of MW.
+wildcards:
+  shape: Name of the custom shape is a wildcard to allow multiple outputs based on different shapes.

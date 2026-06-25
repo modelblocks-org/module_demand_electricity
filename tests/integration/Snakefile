@@ -1,0 +1,32 @@
+# Emulate a user configuring the module.
+configfile: workflow.source_path("./test_config.yaml")
+
+
+# Import the module and configure it.
+# `snakefile:` specifies the module. It can use file paths and special github(...) / gitlab(...) markers
+# `pathvars:` re-wires the location of user resources, intermediary module files, and module results.
+module module_demand_electricity:
+    pathvars:
+        shapes="resources/user/{shape}/shapes.parquet",
+        token_entsoe="resources/user/token_entsoe.txt",
+        # test the re-routing of resources, results and logs
+        resources="resources/module/resources",
+        results="resources/module/results",
+        logs="resources/module/logs",
+    snakefile:
+        "../../workflow/Snakefile"
+    config:
+        config["integration_test"]
+
+
+# rename all module rules with a prefix, to avoid naming conflicts.
+use rule * from module_demand_electricity as module_demand_electricity_*
+
+
+# Montenegro test case
+rule example_montenegro:
+    default_target: True
+    input:
+        "resources/module/results/EUROPE_S_C1_ADM1/demand_electricity_MW.parquet",
+    message:
+        "A small test case for Montenegro."
