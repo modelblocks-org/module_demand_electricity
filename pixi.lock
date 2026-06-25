@@ -205,7 +205,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/certifi-2026.6.17-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.4.7-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/click-8.4.1-pyhc90fa1f_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/clio-tools-2026.06.23-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/clio-tools-2026.03.30-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/comm-0.2.3-pyhe01879c_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/conda-index-0.12.1-pyhd8ed1ab_0.conda
@@ -348,7 +348,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/certifi-2026.6.17-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.4.7-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/click-8.4.1-pyhc90fa1f_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/clio-tools-2026.06.23-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/clio-tools-2026.03.30-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/comm-0.2.3-pyhe01879c_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/conda-index-0.12.1-pyhd8ed1ab_0.conda
@@ -607,7 +607,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/certifi-2026.6.17-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.4.7-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/click-8.4.1-pyh6dadd2b_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/clio-tools-2026.06.23-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/clio-tools-2026.03.30-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/comm-0.2.3-pyhe01879c_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/conda-index-0.12.1-pyhd8ed1ab_0.conda
@@ -3332,9 +3332,9 @@ packages:
   license_family: BSD
   size: 104999
   timestamp: 1779900548735
-- conda: https://conda.anaconda.org/conda-forge/noarch/clio-tools-2026.06.23-pyhd8ed1ab_0.conda
-  sha256: 68f97f005c987796455f51bb1a84b5f8879d09a78959e369af3a00945795b568
-  md5: de13c74a1b7580a7e4a2323b252f2da2
+- conda: https://conda.anaconda.org/conda-forge/noarch/clio-tools-2026.03.30-pyhd8ed1ab_0.conda
+  sha256: a8b34e4bb8854ad899e461430fbabad81fa694805e45421bfe3e56da031d44ad
+  md5: 169bb144044321bb1cec1bfa4ea82a5b
   depends:
   - networkx >=3.4.2
   - numpy >=2.2.3
@@ -3346,8 +3346,9 @@ packages:
   - pyyaml >=6.0.2
   license: MIT
   license_family: MIT
-  size: 23713
-  timestamp: 1782229072527
+  run_exports: {}
+  size: 15754
+  timestamp: 1774882664468
 - conda: https://conda.anaconda.org/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_1.conda
   sha256: ab29d57dc70786c1269633ba3dff20288b81664d3ff8d21af995742e2bb03287
   md5: 962b9857ee8e7018c22f2776ffa0b2d7
