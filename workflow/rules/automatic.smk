@@ -10,7 +10,7 @@ rule download_load_entsoe_api:
         "<logs>/download_load_entsoe_api.log",
     localrule: True
     conda:
-        "../envs/gregor.yaml"
+        "../envs/module.yaml"
     params:
         country_codes_entsoe=internal["load_entsoe_api"]["countries"],
     message:
@@ -26,7 +26,7 @@ rule download_load_entsoe_opsd:
         "<logs>/download_load_entsoe_opsd.log",
     localrule: True
     conda:
-        "../envs/shell.yaml"
+        "../envs/module.yaml"
     params:
         url_load=internal["resources"]["automatic"]["load_entsoe_opsd"],
     message:
@@ -44,7 +44,7 @@ rule download_population:
         "<logs>/download_population.log",
     localrule: True
     conda:
-        "../envs/shell.yaml"
+        "../envs/module.yaml"
     params:
         url_population=internal["resources"]["automatic"]["population"],
     message:
