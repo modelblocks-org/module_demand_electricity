@@ -42,7 +42,6 @@ def test_snakemake_environments(module_path, pixi_platforms, tmp_path):
         for platform in pixi_platforms:
             pin_file = env_dir / f"{env_name}.{platform}.pin.txt"
             assert pin_file.exists(), f"{env_name} has no conda pins for {platform}"
-            "token_entsoe.txt": Path("token_entsoe.txt"),
 
 
 @pytest.fixture(scope="module")
