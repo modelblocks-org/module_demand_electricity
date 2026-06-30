@@ -23,7 +23,15 @@ snakemake-minimal = ">=9.19.0"
 pytz = ">=2026.1.post1"
 
 [feature.module.dependencies]
-curl = ">=8.9.1"
+curl = "=8.9.1"
+pycountry = "=24.6.1"
+pyarrow = "=17.0.0"
+fastparquet = "=2026.5.0"
+pydantic = "=2.13.4"
+entsoe-py = "=0.8.0"
+dask = "=2026.6.0"
+numpy = "=1.26.4"
+gregor = "=0.1.0"
 
 [environments]
 module = { features = ["module"], no-default-feature = true }
