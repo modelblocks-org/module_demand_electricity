@@ -15,6 +15,13 @@ TOKEN_ENTSOE = os.getenv("TOKEN_ENTSOE")
 TOKEN_FILE = Path("resources/user/token_entsoe.txt")
 
 
+@pytest.fixture(scope="module")
+def module_path():
+    """Parent directory of the project."""
+    # If your module needs files in resources/user/, place automated downloads here.
+    return Path(__file__).parent.parent
+
+
 @pytest.fixture(scope="session")
 def user_path() -> Path:
     """Download and unzip test files."""
