@@ -83,8 +83,11 @@ snakemake --use-conda --cores 2  # run the workflow!
 
 This module is based on the following research and datasets:
 
-*
-*
+* ENTSOE Transparency Platform (https://transparency.entsoe.eu)
+* Open Power System Data (https://data.open-power-system-data.org)
+* Schiavina M., Freire S., Carioli A., MacManus K. (2023):
+  GHS-POP R2023A - GHS population grid multitemporal (1975-2030).European Commission, Joint Research Centre (JRC)
+  PID: http://data.europa.eu/89h/2ff68a52-5b5b-4a22-8f40-c41da8332cfe, doi:10.2905/2FF68A52-5B5B-4A22-8F40-C41DA8332CFE
 
 ## Contributors ✨
 
