@@ -6,7 +6,7 @@ rule clean_load_entsoe_opsd:
     log:
         "<logs>/clean_load_entsoe_opsd.log",
     conda:
-        "../envs/gregor.yaml"
+        "../envs/module.yaml"
     script:
         "../scripts/clean_load_entsoe_opsd.py"
 

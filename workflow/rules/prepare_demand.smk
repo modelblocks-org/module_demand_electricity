@@ -11,7 +11,7 @@ rule demand_electricity_raster:
     log:
         "<logs>/{shape}/demand_electricity_raster.log",
     conda:
-        "../envs/gregor.yaml"
+        "../envs/module.yaml"
     message:
         "Disaggregate annual demand to raster."
     script:
@@ -29,7 +29,7 @@ rule demand_electricity_polygon:
     log:
         "<logs>/{shape}/demand_electricity_polygon.log",
     conda:
-        "../envs/gregor.yaml"
+        "../envs/module.yaml"
     message:
         "Aggregate annual demand to shapes and scale with profile."
     script:
