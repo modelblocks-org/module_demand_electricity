@@ -85,7 +85,7 @@ def main(
     plt.savefig(plot_raster, bbox_inches="tight")
 
     plot_national_profiles(demand)
-    plt.savefig(plot_profiles, bbox_inches="tight", dpi=300)
+    plt.savefig(plot_profiles, bbox_inches="tight", dpi=120)
 
 
 if __name__ == "__main__":
