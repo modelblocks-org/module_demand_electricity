@@ -1,9 +1,8 @@
-# Data module for electricity demand in Europe
+# European electricity demand
 
 This module prepares electricity demand timeseries for Europe at arbitrary resolution, based on ENTSO-E historical load data.
 
 <!-- Place an attractive image of module outputs here -->
-
 <p align="center">
   <img src="./figures/plot_profiles.png">
 </p>

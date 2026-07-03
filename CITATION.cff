@@ -3,9 +3,10 @@
 # https://citation-file-format.github.io/
 cff-version: 1.2.0
 message: If you use this software or data produced by it, please cite it using the metadata from this file.
-title: "Modelblocks - module_demand_electricity: Data module for electricity demand in Europe"
+title: "Modelblocks - module_demand_electricity: European electricity demand"
 repository: "https://github.com/modelblocks-org/module_demand_electricity"
 license: Apache-2.0
 authors:
-  - given-names: Jann
-    family-names: Launer
+  - given-names: "Jann"
+    family-names: "Launer"
+    email: "j.a.c.launer@tudelft.nl"
