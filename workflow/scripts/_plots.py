@@ -16,6 +16,8 @@ WhiteToRed = LinearSegmentedColormap.from_list("WhiteToRed", ["#ffffff", "#ff000
 
 def plot_national_profiles(df: pd.DataFrame):
     """Plot electricity demand profiles for all countries."""
+    color_missing = "#ff9393"
+    color_zero = "#dea1fd"
     profiles_GW = df * MW_to_GW
     profiles_GW_d = profiles_GW.resample("1D").mean()
 
@@ -41,11 +43,11 @@ def plot_national_profiles(df: pd.DataFrame):
 
         # plot missing values as red
         highlight_values(
-            ax, profiles_GW[column], lambda x: x.isna(), color="red", alpha=0.5
+            ax, profiles_GW[column], lambda x: x.isna(), color=color_missing, alpha=1
         )
         # plot zero values as violet
         highlight_values(
-            ax, profiles_GW[column], lambda x: x == 0, color="violet", alpha=0.5
+            ax, profiles_GW[column], lambda x: x == 0, color=color_zero, alpha=1
         )
         ax.invert_yaxis()
         ax.set_xlim(0, val_max * 1.1)
@@ -66,8 +68,8 @@ def plot_national_profiles(df: pd.DataFrame):
     handles = {
         plt.Line2D([0], [0], color="C0", alpha=0.3, label="Hourly load"),
         plt.Line2D([0], [0], color="k", label="Daily mean load"),
-        plt.Rectangle((0, 0), 1, 1, color="violet", alpha=0.5, label="Zero values"),
-        plt.Rectangle((0, 0), 1, 1, color="red", alpha=0.5, label="Missing values"),
+        plt.Rectangle((0, 0), 1, 1, color=color_zero, alpha=1, label="Zero values"),
+        plt.Rectangle((0, 0), 1, 1, color=color_missing, alpha=1, label="Missing values"),
     }
     labels = [h.get_label() for h in handles]
     fig.legend(handles=handles, labels=labels, loc="lower center", ncol=4)
