@@ -1,9 +1,11 @@
-# Data module for electricity demand in Europe
+# European electricity demand
 
-This module prepares electricity demand timeseries for Europe at arbitrary resolution
+This module prepares electricity demand timeseries for Europe at arbitrary resolution, based on ENTSO-E historical load data.
 
 <!-- Place an attractive image of module outputs here -->
-
+<p align="center">
+  <img src="./figures/plot_profiles.png">
+</p>
 
 ## About
 <!-- Please do not modify this templated section -->
@@ -83,8 +85,11 @@ snakemake --use-conda --cores 2  # run the workflow!
 
 This module is based on the following research and datasets:
 
-*
-*
+* ENTSOE Transparency Platform (https://transparency.entsoe.eu)
+* Open Power System Data (https://data.open-power-system-data.org)
+* Schiavina M., Freire S., Carioli A., MacManus K. (2023):
+  GHS-POP R2023A - GHS population grid multitemporal (1975-2030).European Commission, Joint Research Centre (JRC)
+  PID: http://data.europa.eu/89h/2ff68a52-5b5b-4a22-8f40-c41da8332cfe, doi:10.2905/2FF68A52-5B5B-4A22-8F40-C41DA8332CFE
 
 ## Contributors ✨
 
@@ -96,8 +101,8 @@ Thanks goes to these wonderful people, sorted alphabetically ([emoji key](https:
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/jnnr"><img src="https://avatars.githubusercontent.com/u/32454596?v=4?s=100" width="100px;" alt="Jann Launer"/><br /><sub><b>Jann Launer</b></sub></a><br /><a href="#ideas-jnnr" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/modelblocks-org/module_demand_electricity/commits?author=jnnr" title="Code">💻</a> <a href="https://github.com/modelblocks-org/module_demand_electricity/commits?author=jnnr" title="Tests">⚠️</a> <a href="https://github.com/modelblocks-org/module_demand_electricity/commits?author=jnnr" title="Documentation">📖</a></td>
      <td align="center" valign="top" width="14.28%"><a href="https://orcid.org/0000-0003-2288-6423"><img src="https://avatars.githubusercontent.com/u/72193617?v=4?s=100" width="100px;" alt="Ivan Ruiz Manuel"/><br /><sub><b>Ivan Ruiz Manuel</b></sub></a><br /><a href="https://github.com/modelblocks-org/module_demand_electricity/pulls?q=is%3Apr+reviewed-by%3Airm-codebase" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/jnnr"><img src="https://avatars.githubusercontent.com/u/32454596?v=4?s=100" width="100px;" alt="Jann Launer"/><br /><sub><b>Jann Launer</b></sub></a><br /><a href="#ideas-jnnr" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/modelblocks-org/module_demand_electricity/commits?author=jnnr" title="Code">💻</a> <a href="https://github.com/modelblocks-org/module_demand_electricity/commits?author=jnnr" title="Tests">⚠️</a> <a href="https://github.com/modelblocks-org/module_demand_electricity/commits?author=jnnr" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>

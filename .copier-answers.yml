@@ -1,13 +1,18 @@
 # Changes here will be overwritten by Copier
 # !!!!! DO NOT MANUALLY MODIFY THIS FILE !!!!!
-_commit: v1.0.2
+_commit: v1.0.3
 _src_path: https://github.com/modelblocks-org/data-module-template.git
-author_email: j.a.c.launer@tudelft.nl
-author_family_name: Launer
-author_given_name: Jann
+authors:
+-   email: j.a.c.launer@tudelft.nl
+    family_name: Launer
+    given_name: Jann
 github_org: modelblocks-org
 license: Apache-2.0
+maintainers:
+-   email: j.a.c.launer@tudelft.nl
+    family_name: Launer
+    given_name: Jann
+module_code_name: module_demand_electricity
 module_description: This module prepares electricity demand timeseries for Europe
     at arbitrary resolution
-module_long_name: Data module for electricity demand in Europe
-module_short_name: module_demand_electricity
+module_human_name: European electricity demand
