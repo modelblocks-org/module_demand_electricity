@@ -69,7 +69,9 @@ def plot_national_profiles(df: pd.DataFrame):
         plt.Line2D([0], [0], color="C0", alpha=0.3, label="Hourly load"),
         plt.Line2D([0], [0], color="k", label="Daily mean load"),
         plt.Rectangle((0, 0), 1, 1, color=color_zero, alpha=1, label="Zero values"),
-        plt.Rectangle((0, 0), 1, 1, color=color_missing, alpha=1, label="Missing values"),
+        plt.Rectangle(
+            (0, 0), 1, 1, color=color_missing, alpha=1, label="Missing values"
+        ),
     }
     labels = [h.get_label() for h in handles]
     fig.legend(handles=handles, labels=labels, loc="lower center", ncol=4)
