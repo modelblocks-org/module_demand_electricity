@@ -30,6 +30,16 @@
         "ideas",
         "test"
       ]
+    },
+    {
+      "login": "FLomb",
+      "name": "Francesco Lombardi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26432077?v=4",
+      "profile": "http://www.flombardi.org",
+      "contributions": [
+        "ideas",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
