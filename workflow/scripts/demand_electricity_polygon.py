@@ -1,5 +1,6 @@
 """Prepare electricity demand timeseries, aggregated to shapes."""
 
+import logging
 import sys
 from typing import TYPE_CHECKING, Any
 from warnings import warn
@@ -51,9 +52,13 @@ def apply_profiles(demand_polygon, shapes, demand_profiles):
     demand_polygon_covered = demand_polygon.loc[
         ~demand_polygon.index.isin(regions_not_covered)
     ]
-    warn(
-        f"Regions {regions_not_covered} are not covered by any demand profile and have been dropped."
-    )
+    if regions_not_covered:
+        warn(
+            "Regions "
+            f"{regions_not_covered} "
+            "are not covered by any demand profile "
+            "and have been dropped."
+        )
 
     # assign profiles to regions
     demand_profiles_mapped = pd.DataFrame(
@@ -145,6 +150,9 @@ def main(
 
 if __name__ == "__main__":
     sys.stderr = open(snakemake.log[0], "w", buffering=1)
+
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
     main(
         path_demand_raster=snakemake.input.demand_raster,
         path_demand_profiles=snakemake.input.demand_profiles,

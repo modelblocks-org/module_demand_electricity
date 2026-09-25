@@ -1,5 +1,6 @@
 """Prepare electricity demand timeseries at raster resolution."""
 
+import logging
 import sys
 from typing import TYPE_CHECKING, Any
 from warnings import warn
@@ -26,7 +27,6 @@ def main(
     path_output_data,
     path_output_profiles,
     plot_raster,
-    plot_profiles,
 ):
     """Main function."""
     # load data
@@ -84,12 +84,13 @@ def main(
     map_raster(countries, demand_raster)
     plt.savefig(plot_raster, bbox_inches="tight")
 
-    plot_national_profiles(demand)
-    plt.savefig(plot_profiles, bbox_inches="tight", dpi=110)
+    plot_national_profiles(demand_filtered)
 
 
 if __name__ == "__main__":
     sys.stderr = open(snakemake.log[0], "w", buffering=1)
+
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     main(
         path_demand=snakemake.input.demand,
         path_population=snakemake.input.population,
@@ -99,5 +100,4 @@ if __name__ == "__main__":
         path_output_data=snakemake.output.output_data,
         path_output_profiles=snakemake.output.output_profiles,
         plot_raster=snakemake.output.plot_raster,
-        plot_profiles=snakemake.output.plot_profiles,
     )

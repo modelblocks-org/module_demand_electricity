@@ -1,5 +1,268 @@
-# A minimal example of how to configure this module
 temporal_scope:
   start: "2017-01-01"
-  end: "2018-01-01"
-use_load: entsoe_api # entsoe_opsd or entsoe_api
+  end: "2017-01-03"
+  frequency: "1h"
+
+# Load sources are listed in priority order. Where multiple sources provide
+# data for the same country and timestamp, the earlier source takes priority.
+# Supported sources include: entsoe, entsoe_power_statistics, neso, opsd.
+# NOTE: Power Statistics is a backup for ENTSOE and both are not necessary together.
+load_sources:
+  - entsoe
+  - entsoe_power_statistics
+  - neso
+  - opsd
+  - orkustofnun
+
+# Exercise the full advanced gap-filling workflow. See config/README.md for
+# the complete configuration reference and method descriptions.
+gap_filling:
+  mode: advanced
+
+  basic:
+    rules:
+      # Fill short internal gaps by linear interpolation.
+      - name: interpolate_short_gaps
+        method: linear_interpolation
+        max_gap: 3h
+
+      # Fill longer gaps using the mean of the corresponding periods one
+      # week before and one week after the missing period.
+      - name: average_adjacent_weeks
+        method: average_periods
+        max_gap: 326h
+        source_offsets:
+          - -7d
+          - 7d
+
+      # If averaging cannot fill the gap, try copying the corresponding
+      # period from the previous week.
+      - name: copy_previous_week
+        method: copy_periods
+        max_gap: 168h
+        source_offset: -168h
+        require_complete_source: true
+
+      # Finally, try copying the corresponding period from the following
+      # week when a complete source period is available.
+      - name: copy_following_week
+        method: copy_periods
+        max_gap: 168h
+        source_offset: 168h
+        require_complete_source: true
+
+  advanced:
+    auxiliary_data:
+      # Apply the same basic cleaning rules to acquired auxiliary data before
+      # it is used to construct advanced replacement profiles.
+      basic_gap_filling:
+        enabled: true
+
+    sources:
+
+      # Build synethic source on average per-hour demand across [2010,2014),[2014,2018),[2018,2022)
+      # Rescale to [2010,2014), to closer match demand of [2006,2010)
+      avg_finland_2010_2022_scaled_to_2010_2014:
+        method: construct_from_sources
+        periods:
+          - country: FIN
+            start: "2010-01-01"
+            end: "2014-01-01"
+            weight: 1
+          - country: FIN
+            start: "2014-01-01"
+            end: "2018-01-01"
+            weight: 1
+          - country: FIN
+            start: "2018-01-01"
+            end: "2022-01-01"
+            weight: 1
+        scaling:
+            method: match_total
+            periods:
+              - country: FIN
+                start: "2010-01-01"
+                end: "2014-01-01"
+                weight: 1
+
+      avg_denmark_2010_2022_scaled_to_2010_2014:
+        method: construct_from_sources
+        periods:
+          - country: DNK
+            start: "2010-01-01"
+            end: "2014-01-01"
+            weight: 1
+          - country: DNK
+            start: "2014-01-01"
+            end: "2018-01-01"
+            weight: 1
+          - country: DNK
+            start: "2018-01-01"
+            end: "2022-01-01"
+            weight: 1
+        scaling:
+            method: match_total
+            periods:
+              - country: DNK
+                start: "2010-01-01"
+                end: "2014-01-01"
+                weight: 1
+
+      avg_sweden_2010_2022_scaled_to_2010_2014:
+        method: construct_from_sources
+        periods:
+          - country: SWE
+            start: "2010-01-01"
+            end: "2014-01-01"
+            weight: 1
+          - country: SWE
+            start: "2014-01-01"
+            end: "2018-01-01"
+            weight: 1
+          - country: SWE
+            start: "2018-01-01"
+            end: "2022-01-01"
+            weight: 1
+        scaling:
+            method: match_total
+            periods:
+              - country: SWE
+                start: "2010-01-01"
+                end: "2014-01-01"
+                weight: 1
+
+      source_for_finland_2022_06_18_16:
+        method: construct_from_sources
+        periods:
+          - country: FIN
+            start: "2022-06-25 16:00"
+            end: "2022-06-26 16:00"
+            weight: 1
+          - country: FIN
+            start: "2022-06-11 16:00"
+            end: "2022-06-12 16:00"
+            weight: 1
+          - country: FIN
+            start: "2022-06-04 16:00"
+            end: "2022-06-05 16:00"
+            weight: 1
+          - country: FIN
+            start: "2022-07-02 16:00"
+            end: "2022-07-03 16:00"
+            weight: 1
+        scaling:
+          method: match_total
+          periods:
+            - country: FIN
+              start: "2022-06-18 16:00"
+              end: "2022-06-19 16:00"
+              weight: 1
+            - country: FIN
+              start: "2022-06-25 16:00"
+              end: "2022-06-26 16:00"
+              weight: 0.5
+            - country: FIN
+              start: "2022-06-11 16:00"
+              end: "2022-06-12 16:00"
+              weight: 0.5
+
+
+    rules:
+      # Correct Finland 2006-2010.
+      - name: fill_finland_2006_to_2010_with_avg_of_2010_to_2022
+        country: FIN
+        start: "2006-01-01"
+        end: "2010-01-01"
+        scope: fill_gaps
+        source: avg_finland_2010_2022_scaled_to_2010_2014
+
+      # Correct Denmark 2006-2010.
+      - name: fill_denmark_2006_to_2010_with_avg_of_2010_to_2022
+        country: DNK
+        start: "2006-01-01"
+        end: "2010-01-01"
+        scope: fill_gaps
+        source: avg_denmark_2010_2022_scaled_to_2010_2014
+
+      # Correct Sweden 2006-2010.
+      - name: fill_sweden_2006_to_2010_with_avg_of_2010_to_2022
+        country: SWE
+        start: "2006-01-01"
+        end: "2010-01-01"
+        scope: fill_gaps
+        source: avg_sweden_2010_2022_scaled_to_2010_2014
+
+      # Overwrite Finland's 2022-06-18 16:00 - 2022-06-19 16:00
+      # for which data quality assessment reveals a completely
+      # flat demand profile .
+      - name: correct_flat_demand_profile_finland_2022
+        country: FIN
+        start: "2022-06-18 16:00"
+        end: "2022-06-19 16:00"
+        scope: overwrite
+        source: source_for_finland_2022_06_18_16
+
+data_quality:
+  tests:
+    - name: near_zero_demand
+      method: range
+      minimum:
+        value_mode: quantile
+        quantile: 0.5
+        multiplier: 0.1
+
+    - name: extreme_demand_ramp
+      method: rate_of_change
+      difference_mode: fixed
+      threshold:
+        value_mode: median_absolute_increment
+        multiplier: 12
+
+    - name: longterm_shift_in_energy_demand
+      method: level_shift
+      window_duration: 365D
+      threshold:
+        value_mode: quantile
+        quantile: 0.5
+        multiplier: 0.1
+
+    - name: repeated_daily_profile
+      method: repeated_pattern
+      pattern_duration: 24h
+      minimum_matches: 2
+
+    - name: flat_day
+      method: flatline
+      minimum_duration: 24h
+      tolerance:
+        value_mode: quantile_range
+        lower_quantile: 0
+        upper_quantile: 0.95
+        multiplier: 0.001
+
+    - name: extreme_scale_mismatch
+      method: contextual_level
+      reference_orders:
+        - period: 7D
+          radius: 4
+        - period: 1Y
+          radius: 2
+      robust_deviation_threshold: 20
+
+    - name: extreme_diurnal_mismatch
+      method: contextual_profile
+      profile_duration: 24h
+      profile_offset: 0h
+      reference_orders:
+        - period: 7D
+          radius: 4
+        - period: 1Y
+          radius: 20
+      robust_deviation_threshold: 20
+
+    - name: source_disagreement
+      method: source_disagreement
+      difference_mode: relative
+      threshold:
+        value_mode: fixed
+        value: 0.1
